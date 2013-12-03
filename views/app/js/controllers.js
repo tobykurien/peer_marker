@@ -58,7 +58,7 @@ var module = angular.module('myApp.controllers', []).
 
             UserService.get().then(function (result) {
                 $scope.user = result.data;
-                if (!$scope.user.teacher) $location.path('/student');
+                if (!$scope.user.type == "teacher") $location.path('/student');
             });
 
             AssignmentService.assignments().then(function (result) {
