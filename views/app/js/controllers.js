@@ -51,6 +51,27 @@ var module = angular.module('myApp.controllers', []).
         }])
     .controller('TeacherController', [
         '$scope',
+        'AssignmentService',
+        'UserService',
+        '$timeout', function ($scope, AssignmentService, UserService, $timeout) {
+
+            UserService.get().then(function (result) {
+                $scope.user = result.data;
+            });
+
+            AssignmentService.assignments().then(function (result) {
+                $scope.assignments = result.data;
+            });
+
+            $scope.submit = function (id, answer) {
+                AssignmentService.createAnswer(id, answer).then(function () {
+                    $scope.assignment = {};
+                });
+            };
+
+        }])        
+    .controller('TeacherNewController', [
+        '$scope',
         'UserService',
         'AssignmentService' ,
         '$location' ,
@@ -73,7 +94,8 @@ var module = angular.module('myApp.controllers', []).
                 });
             };
 
-        }]).controller('MarkingController', [
+        }])
+   .controller('MarkingController', [
         '$scope',
         'UserService',
         'AssignmentService' ,
@@ -99,7 +121,8 @@ var module = angular.module('myApp.controllers', []).
             };
 
             observeMarking();
-        }]).controller('GradingController', [
+        }])
+    .controller('GradingController', [
         '$scope',
         'UserService',
         'AssignmentService',
