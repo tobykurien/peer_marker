@@ -28,7 +28,7 @@ create table evaluations (
 	ccomment varchar(255)
 );
 
-create table pairwise (
+create table comparisons (
    id bigint auto_increment,
    student_id bigint,
    answer1_id bigint,
