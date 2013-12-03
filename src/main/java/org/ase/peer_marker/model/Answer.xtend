@@ -8,4 +8,8 @@ class Answer extends Model {
 	def Student getStudent() {
 	   parent(Student)
 	}
+	
+	def getStudentId() {
+	   getLong("student_id")
+	}
 }

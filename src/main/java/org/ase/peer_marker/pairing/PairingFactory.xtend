@@ -19,4 +19,29 @@ abstract class PairingFactory {
     * not belong to the specified student
     */
    def abstract List<Answer> getPair(long studentId)
+   
+   /**
+    * Check if the pair is valid
+    */
+   def boolean validatePair(Answer answer1, Answer answer2, long studentId) {
+      if (answer1 == null) return false
+      if (answer2 == null) return false
+      if (answer1.id == answer2.id) return false
+      
+      if (answer1.studentId == studentId ||
+          answer2.studentId == studentId) {
+             return false
+      }
+      
+      return true
+   }
+
+   /**
+    * Check if the selection is valid
+    */
+   def boolean validateAnswer(Answer answer, long studentId) {
+      if (answer == null || answer.studentId == studentId) return false
+      
+      return true
+   }
 }
