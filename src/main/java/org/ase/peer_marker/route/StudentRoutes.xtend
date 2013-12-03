@@ -4,6 +4,8 @@ import org.ase.peer_marker.model.Student
 import org.ase.peer_marker.transformer.JsonTransformer
 import org.javalite.activejdbc.Model
 
+import static extension org.ase.peer_marker.Helper.*
+
 class StudentRoutes extends BaseRoute {
    val student = Model.with(Student)
    
@@ -14,7 +16,7 @@ class StudentRoutes extends BaseRoute {
          ])
 
       get("/api/user") [ req, res |
-         var user = req.session.attribute("student") as Student
+         var user = req.student
          if(user.get("username").equals("teacher")) user.type = "teacher"
          '''{ "name": "«user.get("username")»", "type" : "«user.type»"}'''
       ]      

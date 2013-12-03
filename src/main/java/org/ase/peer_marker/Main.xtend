@@ -10,6 +10,7 @@ import org.ase.peer_marker.route.StudentRoutes
 import spark.servlet.SparkApplication
 
 import static com.tobykurien.sparkler.Sparkler.*
+import static extension org.ase.peer_marker.Helper.*
 
 class Main implements SparkApplication {
    // Initialize server - called from main() or from Servlet container
@@ -22,7 +23,7 @@ class Main implements SparkApplication {
       // Set up site-wide authentication
       before [ req, res, filter |
          if (!req.pathInfo.startsWith("/login")) {
-            if (req.session(true).attribute("student") == null) {
+            if (req.student == null) {
                res.redirect("/login")
                filter.haltFilter(401, "Unauthorised")
             }
