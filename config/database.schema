@@ -1,4 +1,4 @@
-create table students(
+create table students (
 	id bigint auto_increment,
 	username varchar(255),
 	password varchar(255)
@@ -12,7 +12,7 @@ create table assignments (
 	status varchar(30)
 );
 
-create table answers(
+create table answers (
 	id bigint auto_increment,
 	student_id bigint,
 	assignment_id bigint,
@@ -20,12 +20,18 @@ create table answers(
 	content text
 );
 
-create table evaluations(
+create table evaluations (
 	id bigint auto_increment,
+   student_id bigint,
 	answer_id bigint,
 	pcomment varchar(255),
-	score double,
 	ccomment varchar(255)
 );
 
-
+create table pairwise (
+   id bigint auto_increment,
+   student_id bigint,
+   answer1_id bigint,
+   answer2_id bigint,
+   score double
+);
