@@ -1,9 +1,11 @@
+drop table students;
 create table students (
 	id bigint auto_increment,
 	username varchar(255),
 	password varchar(255)
 );
 
+drop table assignments;
 create table assignments (
 	id bigint auto_increment,
 	name varchar(255),
@@ -12,6 +14,7 @@ create table assignments (
 	status varchar(30)
 );
 
+drop table answers;
 create table answers (
 	id bigint auto_increment,
 	student_id bigint,
@@ -20,6 +23,7 @@ create table answers (
 	content text
 );
 
+drop table evaluations;
 create table evaluations (
 	id bigint auto_increment,
    student_id bigint,
@@ -28,6 +32,7 @@ create table evaluations (
 	ccomment varchar(255)
 );
 
+drop table comparisons;
 create table comparisons (
    id bigint auto_increment,
    student_id bigint,
