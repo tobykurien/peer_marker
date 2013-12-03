@@ -4,6 +4,10 @@ import org.ase.peer_marker.model.Assignment
 import org.ase.peer_marker.transformer.JsonTransformer
 import org.javalite.activejdbc.Model
 import org.json.JSONObject
+import spark.Request
+import spark.Response
+
+import static extension org.ase.peer_marker.Helper.*
 
 class AssignmentRoutes extends BaseRoute {
    val assignment = Model.with(Assignment)
@@ -11,11 +15,14 @@ class AssignmentRoutes extends BaseRoute {
    override load() {
       get(
          new JsonTransformer("/api/assignments") [ req, res |
+            authenticate(req, res)
             assignment.all
          ])
 
       post(
          new JsonTransformer("/api/assignment") [ req, res |
+            authenticate(req, res)
+            
             // remove existing editing assignment
             assignment.find("status = ?", "EDITING")?.forEach [ a |
                a.set("status", "DONE")
@@ -34,6 +41,8 @@ class AssignmentRoutes extends BaseRoute {
 
       put(
          new JsonTransformer("/api/assignment/:id") [ req, res |
+            authenticate(req, res)
+
             var j = new JSONObject(req.body)
             assignment.update(
                "name",
@@ -52,6 +61,13 @@ class AssignmentRoutes extends BaseRoute {
                #{}
             }
          ])
+   }
+   
+   def authenticate(Request request, Response response) {
+      if (!request.isAdmin) {
+         response.status(401)
+         throw new Exception("Unauthorised")
+      }
    }
 
 }

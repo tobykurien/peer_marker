@@ -16,4 +16,9 @@ class Helper {
    def static setStudent(Request request, Student student) {
       request.session(true).attribute("student", student)
    }
+   
+   // Is this user an admin?
+   def static isAdmin(Request request) {
+      getStudent(request).get("username").equals("teacher")
+   }
 }

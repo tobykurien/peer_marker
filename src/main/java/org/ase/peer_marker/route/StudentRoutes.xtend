@@ -17,7 +17,7 @@ class StudentRoutes extends BaseRoute {
 
       get("/api/user") [ req, res |
          var user = req.student
-         if(user.get("username").equals("teacher")) user.type = "teacher"
+         if (req.isAdmin) user.type = "teacher"
          '''{ "name": "«user.get("username")»", "type" : "«user.type»"}'''
       ]      
    }

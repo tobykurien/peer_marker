@@ -53,10 +53,12 @@ var module = angular.module('myApp.controllers', []).
         '$scope',
         'AssignmentService',
         'UserService',
-        '$timeout', function ($scope, AssignmentService, UserService, $timeout) {
+        '$location' ,
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $timeout) {
 
             UserService.get().then(function (result) {
                 $scope.user = result.data;
+                if (!$scope.user.teacher) $location.path('/student');
             });
 
             AssignmentService.assignments().then(function (result) {
