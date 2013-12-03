@@ -45,7 +45,12 @@ class PairingTest extends TestSupport {
       var forStudent = 1L;
       pairing = new RandomPairing(#[ans1, ans2, ans3])
       var pair = pairing.getPair(forStudent)
-      var valid = pairing.validatePair(pair.get(0), pair.get(1), forStudent)
+
+      // students must not get their own answer
+      var valid = pair.get(0).studentId != forStudent
+      valid = valid && pair.get(1).studentId != forStudent
+      // each answer must be from a different student
+      valid = valid && pair.get(0).studentId != pair.get(1).studentId
       a(valid).shouldBeTrue 
    }
 
