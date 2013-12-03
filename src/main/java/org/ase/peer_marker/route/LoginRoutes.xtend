@@ -4,6 +4,7 @@ import com.tobykurien.sparkler.db.DatabaseManager
 import org.ase.peer_marker.model.Student
 import org.javalite.activejdbc.Base
 import org.javalite.activejdbc.Model
+import static extension org.ase.peer_marker.Helper.*
 
 class LoginRoutes extends BaseRoute {
    val student = Model.with(Student)
@@ -31,7 +32,7 @@ class LoginRoutes extends BaseRoute {
                ret = s.get(0)
             }
 
-            req.session(true).attribute("student", ret)
+            req.student = ret
             res.redirect("/")
             ""
          } finally {

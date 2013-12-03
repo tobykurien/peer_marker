@@ -26,7 +26,7 @@ abstract class PairingFactory {
    def boolean validatePair(Answer answer1, Answer answer2, long studentId) {
       if (answer1 == null) return false
       if (answer2 == null) return false
-      if (answer1.id == answer2.id) return false
+      if (answer1.studentId == answer2.studentId) return false
       
       if (answer1.studentId == studentId ||
           answer2.studentId == studentId) {

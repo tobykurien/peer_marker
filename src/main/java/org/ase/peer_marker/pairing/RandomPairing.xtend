@@ -13,12 +13,15 @@ class RandomPairing extends PairingFactory {
    override getPair(long studentId) {
       var Answer ans1 = pickOne
       while (!validateAnswer(ans1, studentId)) ans1 = pickOne
+      System.out.println("First answer: " + ans1.studentId)
       
       var Answer ans2 = pickOne
       while (!validateAnswer(ans2, studentId)) ans2 = pickOne
+      System.out.println("Second answer: " + ans2.studentId)
 
       while (!validatePair(ans1, ans2, studentId)) {
          ans2 = pickOne
+         System.out.println("Second answer again: " + ans2.studentId)
       }
       
       #[ans1, ans2]
