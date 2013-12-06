@@ -4,9 +4,10 @@
     </div>
 </div>
 
-<div class="row" ng-hide="assignment.name">
+<!-- List of assignments -->
+<div class="row" ng-hide="answer.id">
     <div class="col-md-12">
-        <table class="table table-striped" ng-hide="assignment.name">
+        <table class="table table-striped">
             <tr>
                 <th>Assignment</th>
             </tr>
@@ -16,16 +17,19 @@
         </table>
     </div>
 </div>
-<div class="row" ng-show="assignment.name">
-    <div class="col-md-12">
-        <h2>Assignment {{assignment.name}}</h2>
 
-        <form role="form" ng-submit="submit(assignment.id, answer)" >
+<!-- Answer to a specific assignment -->
+<div class="row" ng-show="answer.id">
+    <div class="col-md-12">
+        <h2>Assignment {{answer.assignment.name}}</h2>
+
+        <form role="form" ng-submit="submit(answer.assignment.id, answer.content)" >
             <div class="form-group">
-                <label>{{assignment.question}}</label>
+                <label>{{answer.assignment.question}}</label>
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="6" ng-model="answer" ng-required="true"></textarea>
+                <textarea class="form-control" rows="6" ng-model="answer.content" 
+                  ng-required="true"></textarea>
             </div>
             <input type="submit" class="btn btn-default" 
             value="submit"/>

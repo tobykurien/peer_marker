@@ -1,7 +1,7 @@
 package org.ase.peer_marker.route
 
 import org.ase.peer_marker.model.Answer
-import org.ase.peer_marker.model.Student
+import org.ase.peer_marker.model.Assignment
 import org.ase.peer_marker.transformer.JsonTransformer
 import org.javalite.activejdbc.Model
 import org.json.JSONObject
@@ -10,18 +10,36 @@ import static extension org.ase.peer_marker.Helper.*
 
 class AnswerRoutes extends BaseRoute {
    val answer = Model.with(Answer)
+   val assignment = Model.with(Assignment)
    
    override load() {
+      // Get list of answers
       get(
          new JsonTransformer("/api/answers") [ req, res |
-            answer.find("student_id = ?", req.student.id).include(Student)
+            answer.find("student_id = ?", req.student.id).include(Assignment)
          ])
 
+      // Get specific answer
       get(
          new JsonTransformer("/api/answers/:id") [ req, res |
             answer.findById(req.params("id"))
          ])
 
+      // Get currently editing answer
+      get(
+         new JsonTransformer("/api/answer") [ req, res |
+            var assigns = assignment.find("status = ?", "EDITING")
+            if (assigns.length > 0) {
+               var ret = answer.where("assignment_id = ?", assigns.get(0).id).toMaps.get(0)
+               // include the assignment details into the answer
+               ret.put("assignment", assigns.get(0).toMap)
+               ret
+            } else {
+               #{}
+            }
+         ])
+         
+      // create or update the current answer
       post(
          new JsonTransformer("/api/answer") [ req, res |
             var j = new JSONObject(req.body)
@@ -35,12 +53,13 @@ class AnswerRoutes extends BaseRoute {
                   "content", j.getString("answer")
                )
             } else {
-               ans.get(0).set(
+               var a = ans.get(0)
+               a.set(
                   "student_id", req.student.id,
                   "assignment_id", j.getLong("assignment"),
                   "content", j.getString("answer")
                )
-               ans.get(0).saveIt
+               a.saveIt
             }               
 
             '''{"success": true}'''

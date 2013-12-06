@@ -16,7 +16,7 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 					return $http.get("api/assignments");
 				},
 				fetch : function() {
-					return $http.get("api/assignment");
+					return $http.get("api/answer");
 				},
 				create : function(name, question) {
 					return $http.post("api/assignment", {
@@ -32,7 +32,10 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 					});
 				},
 				mark : function(assignment) {
-					return $http.post("api/assignment", assignment);
+					return $http.put("api/assignment", {
+						id : id,
+						status : 'MARKING'
+					});
 				},
 				marking : function() {
 					return $http.get("api/marking");

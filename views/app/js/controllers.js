@@ -21,8 +21,8 @@ var module = angular.module('myApp.controllers', []).
                 var checkAssignment = $timeout(function () {
                     AssignmentService.fetch().then(function (result) {
                         var data = result.data;
-                        if (data.name) {
-                            $scope.assignment = result.data;
+                        if (data.id) {
+                            $scope.answer = result.data;
                             $timeout.cancel(checkAssignment);
                         }
                         else {

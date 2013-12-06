@@ -13,22 +13,27 @@ class AssignmentRoutes extends BaseRoute {
    val assignment = Model.with(Assignment)
 
    override load() {
+      // Get all assignments
       get(
          new JsonTransformer("/api/assignments") [ req, res |
             authenticate(req, res)
-            assignment.all
+            assignment.all.limit(10).orderBy("id desc") // limit to 10 newest
          ])
 
+      // Create a new assignment
       post(
          new JsonTransformer("/api/assignment") [ req, res |
             authenticate(req, res)
-            
-            // remove existing editing assignment
-            assignment.find("status = ?", "EDITING")?.forEach [ a |
-               a.set("status", "DONE")
-               a.saveIt()
-            ]
             var j = new JSONObject(req.body)
+            
+            // there should only be one assignment in editing mode
+            if ("EDITING".equalsIgnoreCase(j.getString("status"))) {
+               assignment.find("status = ?", "EDITING")?.forEach [ a |
+                  a.set("status", "DONE")
+                  a.saveIt()
+               ]
+            }
+            
             assignment.createIt(
                "name",
                j.getString("name"),
@@ -39,19 +44,25 @@ class AssignmentRoutes extends BaseRoute {
             )
          ])
 
+      // Update an assignment
       put(
          new JsonTransformer("/api/assignment/:id") [ req, res |
             authenticate(req, res)
 
             var j = new JSONObject(req.body)
-            assignment.update(
-               "name",
-               j.getString("name"),
-               "question",
-               j.getString("question")
-            )
+            var a = assignment.findById(req.params("id"))
+            if (a != null) {
+               if (j.has("name")) a.set("name", j.getString("name"))
+               if (j.has("question")) a.set("question", j.getString("question"))
+               if (j.has("status")) a.set("status", j.getString("status"))               
+               a.saveIt
+            } else {
+               res.status(404)
+               throw new Exception("Not found")
+            }
          ])
 
+      // get current assignment that is in editing mode
       get(
          new JsonTransformer("/api/assignment") [ req, res |
             var assigns = assignment.find("status = ?", "EDITING")
@@ -63,6 +74,7 @@ class AssignmentRoutes extends BaseRoute {
          ])
    }
    
+   // Authenticate that user is a teacher/admin
    def authenticate(Request request, Response response) {
       if (!request.isAdmin) {
          response.status(401)
