@@ -8,6 +8,8 @@ import org.json.JSONObject
 
 import static extension org.ase.peer_marker.Helper.*
 
+import static org.ase.peer_marker.Constants.*
+
 class AnswerRoutes extends BaseRoute {
    val answer = Model.with(Answer)
    val assignment = Model.with(Assignment)
@@ -28,7 +30,7 @@ class AnswerRoutes extends BaseRoute {
       // Get currently editing answer
       get(
          new JsonTransformer("/api/answer") [ req, res |
-            var assigns = assignment.find("status = ?", "EDITING")
+            var assigns = assignment.find("status = ?", STATUS_EDITING)
             if (assigns.length > 0) {
                var ret = answer.where("assignment_id = ?", assigns.get(0).id).toMaps.get(0)
                // include the assignment details into the answer
