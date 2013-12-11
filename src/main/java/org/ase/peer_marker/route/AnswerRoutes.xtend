@@ -32,10 +32,15 @@ class AnswerRoutes extends BaseRoute {
          new JsonTransformer("/api/answer") [ req, res |
             var assigns = assignment.find("status = ?", STATUS_EDITING)
             if (assigns.length > 0) {
-               var ret = answer.where("assignment_id = ?", assigns.get(0).id).toMaps.get(0)
-               // include the assignment details into the answer
-               ret.put("assignment", assigns.get(0).toMap)
-               ret
+               var ans = answer.where("assignment_id = ?", assigns.get(0).id)
+               if (ans.length > 0) {
+                  var ret = ans.get(0).toMap
+                  // include the assignment details into the answer
+                  ret.put("assignment", assigns.get(0).toMap)
+                  return ret                  
+               } else {
+                  #{ "assignment" -> assigns.get(0).toMap }
+               }
             } else {
                #{}
             }

@@ -5,7 +5,7 @@
 </div>
 
 <!-- List of assignments -->
-<div class="row" ng-hide="answer.id">
+<div class="row" ng-hide="answer.assignment.id">
     <div class="col-md-12">
         <table class="table table-striped">
             <tr>
@@ -19,7 +19,7 @@
 </div>
 
 <!-- Answer to a specific assignment -->
-<div class="row" ng-show="answer.id">
+<div class="row" ng-show="answer.assignment.id">
     <div class="col-md-12">
         <h2>Assignment {{answer.assignment.name}}</h2>
 

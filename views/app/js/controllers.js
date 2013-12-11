@@ -21,7 +21,7 @@ var module = angular.module('myApp.controllers', []).
                 var checkAssignment = $timeout(function () {
                     AssignmentService.fetch().then(function (result) {
                         var data = result.data;
-                        if (data.id) {
+                        if (data.assignment.id) {
                             $scope.answer = result.data;
                             $timeout.cancel(checkAssignment);
                         }
@@ -126,8 +126,8 @@ var module = angular.module('myApp.controllers', []).
         '$routeParams',
         '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
 
-            AssignmentService.get($routeParams.id).then(function (result) {
-                $scope.assignment = result.data;
+            AssignmentService.submissions($routeParams.id).then(function (result) {
+                $scope.answers = result.data;
             });
 
         }])        

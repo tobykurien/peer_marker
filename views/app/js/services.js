@@ -15,6 +15,9 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 				assignments: function() {
 					return $http.get("api/assignments");
 				},
+				submissions: function(assignmentId) {
+					return $http.get("api/assignment/" + assignmentId + "/answers");
+				},
 				fetch : function() {
 					return $http.get("api/answer");
 				},

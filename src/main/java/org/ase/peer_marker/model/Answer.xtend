@@ -4,7 +4,7 @@ import org.javalite.activejdbc.Model
 import org.javalite.activejdbc.annotations.BelongsToParents
 import org.javalite.activejdbc.annotations.BelongsTo
 
-@BelongsTo(foreignKeyName="assignment_id",parent=Assignment)
+@BelongsTo(foreignKeyName="student_id",parent=Student)
 class Answer extends Model {
    def Assignment getAssignment() {
       parent(Assignment)

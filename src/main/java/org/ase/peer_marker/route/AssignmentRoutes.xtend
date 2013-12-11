@@ -2,6 +2,7 @@ package org.ase.peer_marker.route
 
 import org.ase.peer_marker.model.Answer
 import org.ase.peer_marker.model.Assignment
+import org.ase.peer_marker.model.Student
 import org.ase.peer_marker.transformer.JsonTransformer
 import org.javalite.activejdbc.Model
 import org.json.JSONObject
@@ -86,9 +87,9 @@ class AssignmentRoutes extends BaseRoute {
 
       // get answers for specified assignment
       get(
-         new JsonTransformer("/api/assignment_answers/:id") [ req, res |
+         new JsonTransformer("/api/assignment/:id/answers") [ req, res |
             authenticate(req, res)
-            answer.find("assignment_id = ?", req.params("id"))
+            answer.find("assignment_id = ?", req.params("id")).include(Student)
          ])
 
 
