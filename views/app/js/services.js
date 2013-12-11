@@ -27,6 +27,7 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 				},
 				update : function(id, name, question) {
 					return $http.put("api/assignment/" + id, {
+						id : id,
 						name : name,
 						question : question
 					});
@@ -43,9 +44,8 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 						answer : answer
 					});
 				},
-				mark : function(assignment) {
-					return $http.put("api/assignment", {
-						id : id,
+				mark : function(assignmentId) {
+					return $http.put("api/assignment/" + assignmentId, {
 						status : 'MARKING'
 					});
 				},

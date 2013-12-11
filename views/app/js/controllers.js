@@ -68,6 +68,15 @@ var module = angular.module('myApp.controllers', []).
             }
             loadAssignments();
             
+            $scope.mark = function(id) {
+            	if (confirm("Are you sure you want to start the peer marking?")) {
+                    AssignmentService.mark(id).then(function (result) {
+                        $scope.assignments = result.data;
+                		$location.path("/teacher/mark/" + id);
+                    });
+            	}
+            }
+
             $scope.del = function(id) {
             	if (confirm("Are you sure?")) {
                     AssignmentService.del(id).then(function (result) {
@@ -91,6 +100,25 @@ var module = angular.module('myApp.controllers', []).
             };
         }])        
     .controller('TeacherEditController', [
+        '$scope',
+        'AssignmentService',
+        'UserService',
+        '$location',
+        '$routeParams',
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
+
+            AssignmentService.get($routeParams.id).then(function (result) {
+                $scope.assignment = result.data;
+            });
+
+        	$scope.update = function (id, name, question) {
+                AssignmentService.update(id, name, question).then(function (result) {
+                    $scope.assignment = result.data;
+                    $location.path('/teacher')
+                });
+            };
+        }])        
+    .controller('TeacherMarkController', [
         '$scope',
         'AssignmentService',
         'UserService',
