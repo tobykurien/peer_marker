@@ -53,6 +53,7 @@ class AnswerRoutes extends BaseRoute {
                   "content", j.getString("answer")
                )
             } else {
+               // update existing answer
                var a = ans.get(0)
                a.set(
                   "student_id", req.student.id,
@@ -62,7 +63,12 @@ class AnswerRoutes extends BaseRoute {
                a.saveIt
             }               
 
-            '''{"success": true}'''
+            // return status of assignment
+            var assign = assignment.findById(j.getLong("assignment"))
+            #{
+               "status" -> assign.getString("status"),
+               "time_remaining" -> -1
+            }
          ])      
    }
    

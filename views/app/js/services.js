@@ -25,6 +25,9 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 						status : 'EDITING'
 					});
 				},
+				get : function(assignmentId) {
+					return $http.get("api/assignment/" + assignmentId, null);
+				},
 				createAnswer : function(id, answer) {
 					return $http.post("api/answer", {
 						assignment : id,

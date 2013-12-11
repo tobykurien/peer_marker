@@ -62,6 +62,12 @@ class AssignmentRoutes extends BaseRoute {
             }
          ])
 
+      // get specified assignment
+      get(
+         new JsonTransformer("/api/assignment/:id") [ req, res |
+            assignment.findById(req.params("id"))
+         ])
+
       // get current assignment that is in editing mode
       get(
          new JsonTransformer("/api/assignment") [ req, res |

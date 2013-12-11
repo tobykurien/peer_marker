@@ -64,39 +64,39 @@ var module = angular.module('myApp.controllers', []).
             AssignmentService.assignments().then(function (result) {
                 $scope.assignments = result.data;
             });
-
-            $scope.submit = function (id, answer) {
-                AssignmentService.createAnswer(id, answer).then(function () {
-                    $scope.assignment = {};
-                });
-            };
-
         }])        
     .controller('TeacherNewController', [
         '$scope',
+        'AssignmentService',
         'UserService',
-        'AssignmentService' ,
         '$location' ,
-        function ($scope, UserService, AssignmentService, $location) {
-            UserService.get().then(function (result) {
-                $scope.user = result.data;
-            });
-
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $timeout) {
             $scope.create = function (name, question) {
                 AssignmentService.create(name, question).then(function (result) {
                     $scope.assignment = result.data;
+                    $location.path('/teacher')
                 });
             };
+        }])        
+    .controller('TeacherEditController', [
+        '$scope',
+        'AssignmentService',
+        'UserService',
+        '$location',
+        '$routeParams',
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
 
-            $scope.mark = function () {
-                $scope.assignment.status = 'MARKING';
-                AssignmentService.mark($scope.assignment).then(function () {
-                    $scope.assignment = null;
-                    $location.path('/marking');
+            AssignmentService.get($routeParams.id).then(function (result) {
+                $scope.assignment = result.data;
+            });
+
+        	$scope.update = function (id, name, question) {
+                AssignmentService.update(id, name, question).then(function (result) {
+                    $scope.assignment = result.data;
+                    $location.path('/teacher')
                 });
             };
-
-        }])
+        }])        
    .controller('MarkingController', [
         '$scope',
         'UserService',

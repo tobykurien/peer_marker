@@ -13,8 +13,10 @@ angular.module('myApp', [
         $routeProvider.when('/student', {templateUrl: 'partials/student.html', controller: 'StudentController'});
         $routeProvider.when('/teacher', {templateUrl: 'partials/teacher.html', controller: 'TeacherController'});
         $routeProvider.when('/teacher/new', {templateUrl: 'partials/teacher_new.html', controller: 'TeacherNewController'});
-        $routeProvider.when('/marking', {templateUrl: 'partials/marking.html', controller: 'MarkingController'});
-        $routeProvider.when('/grading', {templateUrl: 'partials/grading.html', controller: 'GradingController'});
+        $routeProvider.when('/teacher/edit/:id', {templateUrl: 'partials/teacher_edit.html', controller: 'TeacherEditController'});
+        $routeProvider.when('/teacher/mark/:id', {templateUrl: 'partials/teacher_mark.html', controller: 'TeacherMarkController'});
+        $routeProvider.when('/teacher/grade/:id', {templateUrl: 'partials/teacher_grade.html', controller: 'TeacherGradeController'});
+        $routeProvider.when('/marking', {templateUrl: 'partials/marking.html', controller: 'StudentMarkingController'});
         $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: 'HomeController'});
         $routeProvider.otherwise({redirectTo: '/home'});
     }]);

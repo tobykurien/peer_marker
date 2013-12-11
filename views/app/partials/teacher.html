@@ -11,7 +11,7 @@
     </div>
 </div>
 <br/>
-<div class="row">
+<div class="row" ng-show="mode='list'">
     <div class="col-md-12">
         <table class="table table-striped">
             <tr>
@@ -23,9 +23,10 @@
                 <td>{{assignment.name}}<br/><br/>{{assignment.question}}</td>
                 <td>{{assignment.status}}</td>
                 <td>
-                  <a class="btn" href="#/teacher/edit">Edit</a>
-                  <a class="btn" href="#/marking">Mark</a>
-                  <a class="btn" href="#/grading">Grade</a>
+                  <a class="btn" href="#/teacher/edit/{{assignment.id}}">Edit</a>
+                  <a class="btn" href="#/teacher/mark/{{assignment.id}}" ng-show="assignment.status == 'EDITING'">Mark</a>
+                  <a class="btn" href="#/teacher/grade/{{assignment.id}}" ng-show="assignment.status == 'MARKING'">Grade</a>
+                  <a class="btn" ng-click="delete(assignment.id)">Delete</a>
                 </td>
             </tr>
         </table>

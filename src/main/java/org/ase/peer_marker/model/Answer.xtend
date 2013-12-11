@@ -6,10 +6,10 @@ import org.javalite.activejdbc.annotations.BelongsTo
 
 @BelongsTo(foreignKeyName="assignment_id",parent=Assignment)
 class Answer extends Model {
-	def Student getStudent() {
-	   parent(Student)
-	}
-	
+   def Assignment getAssignment() {
+      parent(Assignment)
+   }
+
 	def getStudentId() {
 	   getLong("student_id")
 	}
