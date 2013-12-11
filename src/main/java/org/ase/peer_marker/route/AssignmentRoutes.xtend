@@ -1,5 +1,6 @@
 package org.ase.peer_marker.route
 
+import org.ase.peer_marker.model.Answer
 import org.ase.peer_marker.model.Assignment
 import org.ase.peer_marker.transformer.JsonTransformer
 import org.javalite.activejdbc.Model
@@ -7,11 +8,13 @@ import org.json.JSONObject
 import spark.Request
 import spark.Response
 
-import static extension org.ase.peer_marker.Helper.*
 import static org.ase.peer_marker.Constants.*
+
+import static extension org.ase.peer_marker.Helper.*
 
 class AssignmentRoutes extends BaseRoute {
    val assignment = Model.with(Assignment)
+   val answer = Model.with(Answer)
 
    override load() {
       // Get all assignments
@@ -81,9 +84,18 @@ class AssignmentRoutes extends BaseRoute {
             }
          ])
 
+      // get answers for specified assignment
+      get(
+         new JsonTransformer("/api/assignment_answers/:id") [ req, res |
+            authenticate(req, res)
+            answer.find("assignment_id = ?", req.params("id"))
+         ])
+
+
       // delete specified assignment
       delete(
          new JsonTransformer("/api/assignment/:id") [ req, res |
+            authenticate(req, res)
             assignment.delete("id = ?", req.params("id"))
          ])
    }
