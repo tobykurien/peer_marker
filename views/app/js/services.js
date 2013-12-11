@@ -49,6 +49,11 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 						status : 'MARKING'
 					});
 				},
+				grade : function(assignmentId) {
+					return $http.put("api/assignment/" + assignmentId, {
+						status : 'GRADING'
+					});
+				},
 				marking : function() {
 					return $http.get("api/marking");
 				}

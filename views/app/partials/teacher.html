@@ -24,9 +24,10 @@
                 <td>{{assignment.status}}</td>
                 <td>
                   <a class="btn" href="#/teacher/edit/{{assignment.id}}">Edit</a>
-                  <a class="btn" ng-click="mark(assignment.id)" ng-show="assignment.status == 'EDITING'">Mark</a>
-                  <a class="btn" href="#/teacher/grade/{{assignment.id}}" ng-show="assignment.status == 'MARKING'">Grade</a>
-                  <a class="btn" ng-click="del(assignment.id)">Delete</a>
+                  <a class="btn" ng-click="mark(assignment.id)" ng-show="assignment.status == 'EDITING'">Start Mark</a>
+                  <a class="btn" href="#/teacher/mark/{{assignment.id}}" ng-show="assignment.status == 'MARKING'">View Marking</a>
+                  <a class="btn" href="#/teacher/grade/{{assignment.id}}" ng-show="assignment.status == 'GRADING'">Grade</a>
+                  <a class="btn" ng-click="del(assignment.id)" ng-show="assignment.status != 'MARKING' && assignment.status != 'GRADING'">Delete</a>
                 </td>
             </tr>
         </table>

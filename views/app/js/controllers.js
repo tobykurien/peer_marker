@@ -130,12 +130,31 @@ var module = angular.module('myApp.controllers', []).
                 $scope.assignment = result.data;
             });
 
-        	$scope.update = function (id, name, question) {
-                AssignmentService.update(id, name, question).then(function (result) {
-                    $scope.assignment = result.data;
-                    $location.path('/teacher')
-                });
-            };
+            $scope.grade = function(id) {
+            	if (confirm("Are you sure you want to stop peer marking and start grading?")) {
+                    AssignmentService.grade(id).then(function (result) {
+                        $scope.assignments = result.data;
+                		$location.path("/teacher/grade/" + id);
+                    });
+            	}
+            }
+        }])        
+    .controller('TeacherGradeController', [
+        '$scope',
+        'AssignmentService',
+        'UserService',
+        '$location',
+        '$routeParams',
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
+
+            AssignmentService.get($routeParams.id).then(function (result) {
+                $scope.assignment = result.data;
+            });
+
+            $scope.complete = function(id) {
+            	if (confirm("Are you sure you want to apply the selected grades?")) {
+            	}
+            }
         }])        
    .controller('MarkingController', [
         '$scope',
