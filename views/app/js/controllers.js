@@ -118,6 +118,19 @@ var module = angular.module('myApp.controllers', []).
                 });
             };
         }])        
+    .controller('TeacherViewController', [
+        '$scope',
+        'AssignmentService',
+        'UserService',
+        '$location',
+        '$routeParams',
+        '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
+
+            AssignmentService.get($routeParams.id).then(function (result) {
+                $scope.assignment = result.data;
+            });
+
+        }])        
     .controller('TeacherMarkController', [
         '$scope',
         'AssignmentService',

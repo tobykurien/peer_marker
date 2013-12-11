@@ -1,13 +1,32 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h2>Assignment Peer Marking</h2>
+        <h2>Assignment Grading</h2>
         <b>{{assignment.name}}</b>
-
-        <form role="form" ng-submit="grade(assignment.id)">
+        
+        <p>
+        View the submissions below and provide a grade for them.
+        The system will then use these to grade the rest of the submissions.
+        </p>
+        
+        <form role="form" ng-submit="grade(answer1, answer2)">
             <div class="form-group">
+               <b>Answer 1</b>
+               <pre>{{answer1.content}}</pre>
+               <br clear="all"/>
+               Peer score: {{answer1.score}}
+               <br clear="all"/>
+               Your Grade: <input type="text" ng-model="answer1.grade"/>%
             </div>
-            <input type="submit" class="btn btn-success" value="Start Grading"/>
+            <div class="form-group">
+               <b>Answer 2</b>
+               <pre>{{answer1.content}}</pre>
+               <br clear="all"/>
+               Peer score: {{answer1.score}}
+               <br clear="all"/>
+               Your Grade: <input type="text" ng-model="answer2.grade"/>%
+            </div>
+            <input type="submit" class="btn btn-success" value="Apply Grading"/>
         </form>
     </div>
 </div>

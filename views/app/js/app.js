@@ -14,6 +14,7 @@ angular.module('myApp', [
         $routeProvider.when('/teacher', {templateUrl: 'partials/teacher.html', controller: 'TeacherController'});
         $routeProvider.when('/teacher/new', {templateUrl: 'partials/teacher_new.html', controller: 'TeacherNewController'});
         $routeProvider.when('/teacher/edit/:id', {templateUrl: 'partials/teacher_edit.html', controller: 'TeacherEditController'});
+        $routeProvider.when('/teacher/view/:id', {templateUrl: 'partials/teacher_view.html', controller: 'TeacherViewController'});
         $routeProvider.when('/teacher/mark/:id', {templateUrl: 'partials/teacher_mark.html', controller: 'TeacherMarkController'});
         $routeProvider.when('/teacher/grade/:id', {templateUrl: 'partials/teacher_grade.html', controller: 'TeacherGradeController'});
         $routeProvider.when('/marking', {templateUrl: 'partials/marking.html', controller: 'StudentMarkingController'});
