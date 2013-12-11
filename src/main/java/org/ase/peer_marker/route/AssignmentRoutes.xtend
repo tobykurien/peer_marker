@@ -51,7 +51,7 @@ class AssignmentRoutes extends BaseRoute {
             authenticate(req, res)
             var j = new JSONObject(req.body)
 
-            if (STATUS_EDITING.equalsIgnoreCase(j.getString("status"))) {
+            if (j.has("status") && STATUS_EDITING.equalsIgnoreCase(j.getString("status"))) {
                resetEditing
             }
 
