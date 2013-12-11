@@ -26,7 +26,7 @@
                   <a class="btn" href="#/teacher/edit/{{assignment.id}}">Edit</a>
                   <a class="btn" href="#/teacher/mark/{{assignment.id}}" ng-show="assignment.status == 'EDITING'">Mark</a>
                   <a class="btn" href="#/teacher/grade/{{assignment.id}}" ng-show="assignment.status == 'MARKING'">Grade</a>
-                  <a class="btn" ng-click="delete(assignment.id)">Delete</a>
+                  <a class="btn" ng-click="del(assignment.id)">Delete</a>
                 </td>
             </tr>
         </table>

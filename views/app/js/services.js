@@ -31,6 +31,9 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 						question : question
 					});
 				},
+				del : function(id) {
+					return $http.delete("api/assignment/" + id);
+				},
 				get : function(assignmentId) {
 					return $http.get("api/assignment/" + assignmentId, null);
 				},

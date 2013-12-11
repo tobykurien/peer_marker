@@ -61,9 +61,21 @@ var module = angular.module('myApp.controllers', []).
                 if (!$scope.user.type == "teacher") $location.path('/student');
             });
 
-            AssignmentService.assignments().then(function (result) {
-                $scope.assignments = result.data;
-            });
+            function loadAssignments(){
+                AssignmentService.assignments().then(function (result) {
+                    $scope.assignments = result.data;
+                });
+            }
+            loadAssignments();
+            
+            $scope.del = function(id) {
+            	if (confirm("Are you sure?")) {
+                    AssignmentService.del(id).then(function (result) {
+                        $scope.assignment = result.data;
+                    	loadAssignments();
+                    });
+            	}
+            }
         }])        
     .controller('TeacherNewController', [
         '$scope',

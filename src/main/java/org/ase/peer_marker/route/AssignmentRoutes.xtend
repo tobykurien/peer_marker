@@ -78,6 +78,12 @@ class AssignmentRoutes extends BaseRoute {
                #{}
             }
          ])
+
+      // delete specified assignment
+      delete(
+         new JsonTransformer("/api/assignment/:id") [ req, res |
+            assignment.delete("id = ?", req.params("id"))
+         ])
    }
    
    // Authenticate that user is a teacher/admin
