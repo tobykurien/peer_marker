@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <h2>Edit Assignment</h2>
 
-        <form role="form" ng-submit="update(assignment.id, name, question)">
+        <form role="form" ng-submit="update(assignment.id, assignment.name, assignment.question)">
             <div class="form-group">
                 <label>Name</label>
                 <input class="form-control" type="text" ng-model="assignment.name" ng-required="true">

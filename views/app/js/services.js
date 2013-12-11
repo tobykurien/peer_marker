@@ -25,6 +25,12 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 						status : 'EDITING'
 					});
 				},
+				update : function(id, name, question) {
+					return $http.put("api/assignment/" + id, {
+						name : name,
+						question : question
+					});
+				},
 				get : function(assignmentId) {
 					return $http.get("api/assignment/" + assignmentId, null);
 				},
