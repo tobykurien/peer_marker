@@ -8,6 +8,7 @@ import spark.Request
 import spark.Response
 
 import static extension org.ase.peer_marker.Helper.*
+import static org.ase.peer_marker.Constants.*
 
 class AssignmentRoutes extends BaseRoute {
    val assignment = Model.with(Assignment)
@@ -27,9 +28,9 @@ class AssignmentRoutes extends BaseRoute {
             var j = new JSONObject(req.body)
             
             // there should only be one assignment in editing mode
-            if ("EDITING".equalsIgnoreCase(j.getString("status"))) {
-               assignment.find("status = ?", "EDITING")?.forEach [ a |
-                  a.set("status", "DONE")
+            if (STATUS_EDITING.equalsIgnoreCase(j.getString("status"))) {
+               assignment.find("status = ?", STATUS_EDITING)?.forEach [ a |
+                  a.set("status", STATUS_COMPLETE)
                   a.saveIt()
                ]
             }
@@ -71,7 +72,7 @@ class AssignmentRoutes extends BaseRoute {
       // get current assignment that is in editing mode
       get(
          new JsonTransformer("/api/assignment") [ req, res |
-            var assigns = assignment.find("status = ?", "EDITING")
+            var assigns = assignment.find("status = ?", STATUS_EDITING)
             if (assigns.length > 0) {
                assigns.get(0)
             } else {
