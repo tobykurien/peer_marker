@@ -30,11 +30,7 @@ class AssignmentRoutes extends BaseRoute {
          new JsonTransformer("/api/assignment") [ req, res |
             authenticate(req, res)
             var j = new JSONObject(req.body)
-            
-            // there should only be one assignment in editing mode
-            if (STATUS_EDITING.equalsIgnoreCase(j.getString("status"))) {
-               resetEditing
-            }
+            resetAssignmentsForStatus(j.getString("status"))
             
             assignment.createIt(
                "name",
@@ -51,10 +47,7 @@ class AssignmentRoutes extends BaseRoute {
          new JsonTransformer("/api/assignment/:id") [ req, res |
             authenticate(req, res)
             var j = new JSONObject(req.body)
-
-            if (j.has("status") && STATUS_EDITING.equalsIgnoreCase(j.getString("status"))) {
-               resetEditing
-            }
+            if (j.has("status")) resetAssignmentsForStatus(j.getString("status"))
 
             var a = assignment.findById(req.params("id"))
             if (a != null) {
@@ -101,13 +94,16 @@ class AssignmentRoutes extends BaseRoute {
          ])
    }
 
-   // There should only be one assignment in "EDITING" status, so 
+   // There should only be one assignment in "EDITING" or "MARKING" status, so 
    // reset current ones to "COMPLETE"   
-   def resetEditing() {
-      assignment.find("status = ?", STATUS_EDITING)?.forEach [ a |
-         a.set("status", STATUS_COMPLETE)
-         a.saveIt()
-      ]
+   def resetAssignmentsForStatus(String toStatus) {
+      if (STATUS_EDITING.equalsIgnoreCase(toStatus) || 
+          STATUS_MARKING.equalsIgnoreCase(toStatus))
+         assignment.find("status = ? or status = ?", 
+            STATUS_EDITING, STATUS_MARKING)?.forEach [ a |
+            a.set("status", STATUS_COMPLETE)
+            a.saveIt()
+         ]
    }
    
    // Authenticate that user is a teacher/admin
