@@ -1,11 +1,16 @@
 create table students (
 	id bigint auto_increment,
+   created_at timestamp,
+   updated_at timestamp,
+   display_name varchar(255),
 	username varchar(255),
 	password varchar(255)
 );
 
 create table assignments (
 	id bigint auto_increment,
+	created_at timestamp,
+	updated_at timestamp,
 	name varchar(255),
 	question text,
 	class varchar(255),
@@ -14,6 +19,8 @@ create table assignments (
 
 create table answers (
 	id bigint auto_increment,
+   created_at timestamp,
+   updated_at timestamp,
 	student_id bigint,
 	assignment_id bigint,
 	score double,
@@ -23,6 +30,8 @@ create table answers (
 
 create table evaluations (
 	id bigint auto_increment,
+   created_at timestamp,
+   updated_at timestamp,
    student_id bigint,
 	answer_id bigint,
 	pcomment varchar(255),
@@ -31,6 +40,8 @@ create table evaluations (
 
 create table comparisons (
    id bigint auto_increment,
+   created_at timestamp,
+   updated_at timestamp,
    student_id bigint,
    answer1_id bigint,
    answer2_id bigint,
