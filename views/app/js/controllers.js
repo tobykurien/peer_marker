@@ -55,7 +55,8 @@ var module = angular.module('myApp.controllers', []).
         'UserService',
         '$location' ,
         '$timeout', function ($scope, AssignmentService, UserService, $location, $timeout) {
-
+        	$timeout.cancel();
+        	
             UserService.get().then(function (result) {
                 $scope.user = result.data;
                 if (!$scope.user.type == "teacher") $location.path('/student');
@@ -148,6 +149,7 @@ var module = angular.module('myApp.controllers', []).
 
             $scope.mark = function(id) {
             	if (confirm("Are you sure you want to start the peer marking?")) {
+                	$timeout.cancel();
                     AssignmentService.mark(id).then(function (result) {
                         $scope.assignments = result.data;
                 		$location.path("/teacher/mark/" + id);
