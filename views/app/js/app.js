@@ -11,6 +11,7 @@ angular.module('myApp', [
     ]).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/student', {templateUrl: 'partials/student.html', controller: 'StudentController'});
+        $routeProvider.when('/student/mark', {templateUrl: 'partials/student_mark.html', controller: 'StudentMarkController'});
         $routeProvider.when('/teacher', {templateUrl: 'partials/teacher.html', controller: 'TeacherController'});
         $routeProvider.when('/teacher/new', {templateUrl: 'partials/teacher_new.html', controller: 'TeacherNewController'});
         $routeProvider.when('/teacher/edit/:id', {templateUrl: 'partials/teacher_edit.html', controller: 'TeacherEditController'});

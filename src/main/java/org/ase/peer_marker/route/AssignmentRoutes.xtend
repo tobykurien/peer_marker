@@ -112,7 +112,7 @@ class AssignmentRoutes extends BaseRoute {
    }
    
    // Authenticate that user is a teacher/admin
-   def authenticate(Request request, Response response) {
+   def public static authenticate(Request request, Response response) {
       if (!request.isAdmin) {
          response.status(401)
          throw new Exception("Unauthorised")

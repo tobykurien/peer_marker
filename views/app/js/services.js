@@ -6,8 +6,8 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('myApp.services', []).value('version', '0.1').factory(
-		"AssignmentService", function($http) {
+angular.module('myApp.services', []).value('version', '0.1')
+	.factory("AssignmentService", function($http) {
 			return {
 				answers : function() {
 					return $http.get("api/answers");
@@ -18,8 +18,11 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 				submissions: function(assignmentId) {
 					return $http.get("api/assignment/" + assignmentId + "/answers");
 				},
-				fetch : function() {
+				currentEditing: function() {
 					return $http.get("api/answer");
+				},
+				currentMarking: function() {
+					return $http.get("api/mark");
 				},
 				create : function(name, question) {
 					return $http.post("api/assignment", {
@@ -64,12 +67,16 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 				},
 				marking : function() {
 					return $http.get("api/marking");
+				},
+				markPair : function() {
+					return $http.get("api/mark/pair");
 				}
 			};
-		}).factory('UserService', function($http) {
-	return {
-		get : function() {
-			return $http.get("api/user");
-		}
+		})
+	.factory('UserService', function($http) {
+		return {
+			get : function() {
+				return $http.get("api/user");
+			}
 	};
 });

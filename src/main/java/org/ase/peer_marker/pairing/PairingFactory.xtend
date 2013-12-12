@@ -10,7 +10,11 @@ import org.ase.peer_marker.model.Answer
 abstract class PairingFactory {
    protected var List<Answer> answers
    
-   new(List<Answer> answers) {
+   public static def getInstance(List<Answer> answers) {
+      new RandomPairing(answers)
+   }
+   
+   protected new(List<Answer> answers) {
       this.answers = answers
    }
    

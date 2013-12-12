@@ -2,12 +2,21 @@
 
 /* Controllers */
 
-var module = angular.module('myApp.controllers', []).
-    controller('StudentController', [
+var module = angular.module('myApp.controllers', [])
+    .controller('HomeController', [
+        '$location',
+        'UserService',
+        function ($location, UserService) {
+            UserService.get().then(function (result) {
+                $location.path(result.data.type)
+            });
+        }])
+	.controller('StudentController', [
         '$scope',
         'AssignmentService',
         'UserService',
-        '$timeout', function ($scope, AssignmentService, UserService, $timeout) {
+        '$timeout',
+        '$location',function ($scope, AssignmentService, UserService, $timeout, $location) {
 
             UserService.get().then(function (result) {
                 $scope.user = result.data;
@@ -19,11 +28,22 @@ var module = angular.module('myApp.controllers', []).
 
             var fetch = function () {
                 var checkAssignment = $timeout(function () {
-                    AssignmentService.fetch().then(function (result) {
+                    AssignmentService.currentEditing().then(function (result) {
                         var data = result.data;
                         if (data.assignment.id) {
                             $scope.answer = result.data;
                             $timeout.cancel(checkAssignment);
+                        }
+                        else {
+                            fetch();
+                        }
+                    })
+                    AssignmentService.currentMarking().then(function (result) {
+                        var data = result.data;
+                        if (data.assignment.id) {
+                            $scope.marking = result.data;
+                            $timeout.cancel(checkAssignment);
+                            $location.path("/student/mark")
                         }
                         else {
                             fetch();
@@ -41,13 +61,21 @@ var module = angular.module('myApp.controllers', []).
             };
 
         }])
-    .controller('HomeController', [
-        '$location',
+	.controller('StudentMarkController', [
+        '$scope',
+        'AssignmentService',
         'UserService',
-        function ($location, UserService) {
-            UserService.get().then(function (result) {
-                $location.path(result.data.type)
+        '$timeout',
+        '$location',function ($scope, AssignmentService, UserService, $timeout, $location) {
+        	$scope.formData = {}
+        	
+            AssignmentService.markPair().then(function (result) {
+                $scope.answers = result.data;
             });
+        	
+            $scope.submit = function (formData) {
+            };
+
         }])
     .controller('TeacherController', [
         '$scope',
