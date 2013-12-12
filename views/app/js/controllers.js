@@ -45,9 +45,6 @@ var module = angular.module('myApp.controllers', [])
                             $timeout.cancel(checkAssignment);
                             $location.path("/student/mark")
                         }
-                        else {
-                            fetch();
-                        }
                     })
                 }, 2000);
             };

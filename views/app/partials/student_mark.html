@@ -10,9 +10,7 @@
 				<div class="panel panel-default">
 				  <div class="panel-heading">Answer {{answers[0].id}}</div>
 				  <div class="panel-body">
-				    <pre>
-				    {{answers[0].content}}
-				    </pre>
+				    <pre>{{answers[0].content.trim()}}</pre>
 				    <div class="form-group">
 					    <label for="pcomment1">What I liked about the answer:</label>
 					    <textarea class="form-control" id="pcomment1" 
@@ -31,9 +29,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">Answer {{answers[1].id}}</div>
               <div class="panel-body">
-                <pre>
-                {{answers[1].content}}
-                </pre>
+                <pre>{{answers[1].content.trim()}}</pre>
                 <div class="form-group">
                    <label for="pcomment2">What I liked about the answer:</label>
                    <textarea class="form-control" id="pcomment2" 
