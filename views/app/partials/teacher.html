@@ -2,15 +2,14 @@
     <div class="col-md-12">
         <h2>Welcome {{user.name}}!</h2>
     </div>
-
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <a class="btn btn-success" href="#/teacher/new">New Assignment</a>
-    </div>
-</div>
-<br/>
+<p>
+	<ul class="nav nav-pills">
+	  <li class="active"><a href="#/teacher/new">New Assignment</a></li>
+	</ul>
+</p>
+
 <div class="row" ng-show="mode='list'">
     <div class="col-md-12">
         <table class="table table-striped">
@@ -23,25 +22,27 @@
                 <td>{{assignment.name}}<br/><br/>{{assignment.question}}</td>
                 <td>{{assignment.status}}</td>
                 <td>
-                  <a class="btn" href="#/teacher/edit/{{assignment.id}}">Edit</a>
+                  <a class="btn" href="#/teacher/edit/{{assignment.id}}">
+                     <span class="glyphicon glyphicon-wrench"></span> Edit</a>
+                  
                   <a class="btn" ng-click="edit(assignment.id)" 
                      ng-show="assignment.status == 'NEW' || assignment.status == 'COMPLETE'"
-                     >Start</a>
+                     ><span class="glyphicon glyphicon-play"></span> Start</a>
                   <a class="btn" href="#/teacher/view/{{assignment.id}}" 
                      ng-show="assignment.status == 'EDITING'"
-                     >View</a>
+                     ><span class="glyphicon glyphicon-eye-open"></span> View</a>
                   <a class="btn" ng-click="mark(assignment.id)" 
                      ng-show="assignment.status == 'EDITING'"
-                     >Start Marking</a>
+                     ><span class="glyphicon glyphicon-ok-circle"></span> Start Marking</a>
                   <a class="btn" href="#/teacher/mark/{{assignment.id}}" 
                      ng-show="assignment.status == 'MARKING'"
-                     >View Marking</a>
+                     ><span class="glyphicon glyphicon-eye-open"></span> View Marking</a>
                   <a class="btn" href="#/teacher/grade/{{assignment.id}}" 
                      ng-show="assignment.status == 'GRADING'"
-                     >Grade</a>
+                     ><span class="glyphicon glyphicon-pencil"></span> Grade</a>
                   <a class="btn" ng-click="del(assignment.id)" 
                      ng-show="assignment.status != 'MARKING' && assignment.status != 'GRADING'"
-                     >Delete</a>
+                     ><span class="glyphicon glyphicon-trash"></span> Delete</a>
                 </td>
             </tr>
         </table>
