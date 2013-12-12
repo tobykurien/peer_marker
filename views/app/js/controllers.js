@@ -67,7 +67,7 @@ var module = angular.module('myApp.controllers', [])
         'UserService',
         '$timeout',
         '$location',function ($scope, AssignmentService, UserService, $timeout, $location) {
-        	$scope.formData = {}
+        	$scope.formData = {'score': 6}
         	
             AssignmentService.markPair().then(function (result) {
                 $scope.answers = result.data;
