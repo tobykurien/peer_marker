@@ -73,6 +73,15 @@ var module = angular.module('myApp.controllers', []).
             }
             loadAssignments();
             
+            $scope.start = function(id) {
+            	if (confirm("Are you sure you want to start this assignment? Current assignment will be stopped.")) {
+                    AssignmentService.start(id).then(function (result) {
+                        $scope.assignments = result.data;
+                		$location.path("/teacher/view/" + id);
+                    });
+            	}
+            }
+
             $scope.mark = function(id) {
             	if (confirm("Are you sure you want to start the peer marking?")) {
                     AssignmentService.mark(id).then(function (result) {

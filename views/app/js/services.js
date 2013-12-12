@@ -25,7 +25,7 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 					return $http.post("api/assignment", {
 						name : name,
 						question : question,
-						status : 'EDITING'
+						status : 'NEW'
 					});
 				},
 				update : function(id, name, question) {
@@ -45,6 +45,11 @@ angular.module('myApp.services', []).value('version', '0.1').factory(
 					return $http.post("api/answer", {
 						assignment : id,
 						answer : answer
+					});
+				},
+				start : function(assignmentId) {
+					return $http.put("api/assignment/" + assignmentId, {
+						status : 'EDITING'
 					});
 				},
 				mark : function(assignmentId) {

@@ -25,7 +25,7 @@
                   <a class="btn" href="#/teacher/edit/{{assignment.id}}">
                      <span class="glyphicon glyphicon-wrench"></span> Edit</a>
                   
-                  <a class="btn" ng-click="edit(assignment.id)" 
+                  <a class="btn" ng-click="start(assignment.id)" 
                      ng-show="assignment.status == 'NEW' || assignment.status == 'COMPLETE'"
                      ><span class="glyphicon glyphicon-play-circle"></span> Start</a>
                   <a class="btn" href="#/teacher/view/{{assignment.id}}" 
