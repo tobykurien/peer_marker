@@ -46,18 +46,22 @@
             </div>            
 
             <div class="form-group">
-               <label for="slider">How do the answers compare?</label>
+               <label for="slider">Which answer was better, and by how much? If both were equally good, keep it in the middle.</label>
                <br/>
-               <B class="radio-inline" >Answer {{answers[0].id}} better</B>
+               <B class="radio-inline" >Answer {{answers[0].id}} 
+                  <span class="glyphicon glyphicon-thumbs-up"></span>
+               </B>
                <input type="radio" class="radio-inline" name="slider" 
                   id="slider" value="{{val}}" ng-model="formData.score" 
                   ng-repeat="val in [1,2,3,4,5,6,7,8,9,10,11]">
-               <B class="radio-inline" >Answer {{answers[1].id}} better</B>
+               <B class="radio-inline" >
+                  <span class="glyphicon glyphicon-thumbs-up"></span>
+                  Answer {{answers[1].id}}
+               </B>
             </div>
             
 
             <input type="submit" class="btn btn-primary" value="submit"/>
-
         </form>
     </div>
 </div>

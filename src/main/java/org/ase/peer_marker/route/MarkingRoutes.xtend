@@ -32,7 +32,7 @@ class MarkingRoutes extends BaseRoute {
          pairing.getPair(req.student.longId).map [a|
             #{
                "id" -> a.longId,
-               "student_id" -> a.getLong("student_id"),
+               //"student_id" -> a.getLong("student_id"),
                "assignment_id" -> a.getLong("assignment_id"),
                "content" -> a.getString("content")
              }
