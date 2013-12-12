@@ -82,15 +82,6 @@ var module = angular.module('myApp.controllers', []).
             	}
             }
 
-            $scope.mark = function(id) {
-            	if (confirm("Are you sure you want to start the peer marking?")) {
-                    AssignmentService.mark(id).then(function (result) {
-                        $scope.assignments = result.data;
-                		$location.path("/teacher/mark/" + id);
-                    });
-            	}
-            }
-
             $scope.del = function(id) {
             	if (confirm("Are you sure?")) {
                     AssignmentService.del(id).then(function (result) {
@@ -140,11 +131,30 @@ var module = angular.module('myApp.controllers', []).
         '$routeParams',
         '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
 
-            AssignmentService.submissions($routeParams.id).then(function (result) {
-                $scope.answers = result.data;
-            });
+        	var observeEditing = function () {
+                var checkEditing = $timeout(function () {
+                    AssignmentService.submissions($routeParams.id).then(function (result) {
+                        $scope.answers = result.data;
+                        if ($scope.answers.length > 0) $scope.assignmentId = $scope.answers[0].assignment_id
+                        observeEditing();
+                    });
+                }, 1000);
+            };        	
+            observeEditing();
+            
+            $scope.view = function(content) {
+            	alert(content);
+            }
 
-        }])        
+            $scope.mark = function(id) {
+            	if (confirm("Are you sure you want to start the peer marking?")) {
+                    AssignmentService.mark(id).then(function (result) {
+                        $scope.assignments = result.data;
+                		$location.path("/teacher/mark/" + id);
+                    });
+            	}
+            }
+    	}])        
     .controller('TeacherMarkController', [
         '$scope',
         'AssignmentService',
@@ -157,6 +167,17 @@ var module = angular.module('myApp.controllers', []).
                 $scope.assignment = result.data;
             });
 
+            var observeMarking = function () {
+                var checkMarking = $timeout(function () {
+                    AssignmentService.marking().then(function (result) {
+                        var data = result.data;
+                        $scope.markingData = data;
+                        observeMarking();
+                    })
+                }, 1000);
+            };
+            observeMarking();
+            
             $scope.grade = function(id) {
             	if (confirm("Are you sure you want to stop peer marking and start grading?")) {
                     AssignmentService.grade(id).then(function (result) {
@@ -189,26 +210,6 @@ var module = angular.module('myApp.controllers', []).
         'AssignmentService' ,
         '$timeout' ,
         function ($scope, UserService, AssignmentService, $timeout) {
-            UserService.get().then(function (result) {
-                $scope.user = result.data;
-            });
-
-            AssignmentService.fetch().then(function (result) {
-                $scope.assignment = result.data;
-            });
-
-            var observeMarking = function () {
-                var checkMarking = $timeout(function () {
-                    AssignmentService.marking().then(function (result) {
-                        var data = result.data;
-                        console.debug(result.data);
-                        $scope.markingData = data;
-                        observeMarking();
-                    })
-                }, 1000);
-            };
-
-            observeMarking();
         }])
     .controller('GradingController', [
         '$scope',

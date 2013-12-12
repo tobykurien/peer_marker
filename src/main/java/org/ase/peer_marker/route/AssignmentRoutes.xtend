@@ -30,7 +30,12 @@ class AssignmentRoutes extends BaseRoute {
          new JsonTransformer("/api/assignment") [ req, res |
             authenticate(req, res)
             var j = new JSONObject(req.body)
-            resetAssignmentsForStatus(j.getString("status"))
+            var status = j.getString("status")
+            if (j.has("status")) {
+               resetAssignmentsForStatus(j.getString("status"))
+            } else {
+               status = "NEW"
+            }
             
             assignment.createIt(
                "name",
@@ -38,7 +43,7 @@ class AssignmentRoutes extends BaseRoute {
                "question",
                j.getString("question"),
                "status",
-               j.getString("status")
+               status
             )
          ])
 

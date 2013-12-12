@@ -31,9 +31,6 @@
                   <a class="btn" href="#/teacher/view/{{assignment.id}}" 
                      ng-show="assignment.status == 'EDITING'"
                      ><span class="glyphicon glyphicon-eye-open"></span> View</a>
-                  <a class="btn" ng-click="mark(assignment.id)" 
-                     ng-show="assignment.status == 'EDITING'"
-                     ><span class="glyphicon glyphicon-ok-circle"></span> Start Marking</a>
                   <a class="btn" href="#/teacher/mark/{{assignment.id}}" 
                      ng-show="assignment.status == 'MARKING'"
                      ><span class="glyphicon glyphicon-eye-open"></span> View Marking</a>
