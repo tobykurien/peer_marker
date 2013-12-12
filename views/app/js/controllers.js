@@ -64,13 +64,18 @@ var module = angular.module('myApp.controllers', [])
         'UserService',
         '$timeout',
         '$location',function ($scope, AssignmentService, UserService, $timeout, $location) {
-        	$scope.formData = {'score': 6}
-        	
-            AssignmentService.markPair().then(function (result) {
-                $scope.answers = result.data;
-            });
+        	function loadPair() {
+                AssignmentService.markPair().then(function (result) {
+                    $scope.answers = result.data;
+                	$scope.formData = {'score': 6}
+                });
+        	}
+        	loadPair();
         	
             $scope.submit = function (formData) {
+            	alert(formData.score);
+            	// TODO - post the data to the server
+            	loadPair();
             };
 
         }])
