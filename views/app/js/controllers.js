@@ -64,6 +64,11 @@ var module = angular.module('myApp.controllers', []).
             function loadAssignments(){
                 AssignmentService.assignments().then(function (result) {
                     $scope.assignments = result.data;
+                    for (var i=0; i < $scope.assignments.length; i++) {
+                        if ($scope.assignments[i].status == "EDITING") $scope.assignments[i].rowClass = "success";
+                        if ($scope.assignments[i].status == "MARKING") $scope.assignments[i].rowClass = "danger";
+                        if ($scope.assignments[i].status == "GRADING") $scope.assignments[i].rowClass = "warning";
+                    }
                 });
             }
             loadAssignments();
