@@ -11,9 +11,14 @@ import org.ase.peer_marker.model.Comparison
 abstract class ScoringFactory {
    protected var List<Comparison> comparisons
    
-   new(List<Comparison> comparisons) {
+   def static ScoringFactory getInstance(List<Comparison> comparisons) {
+      throw new Exception("not yet implemented")
+   }
+   
+   protected new(List<Comparison> comparisons) {
       this.comparisons = comparisons
    }
    
-   def abstract List<Answer> getRanking() 
+   // Apply the comparisons to arrive at a ranking score for each answer
+   def abstract void rankAnswers() 
 }
