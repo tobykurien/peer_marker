@@ -80,8 +80,8 @@ var module = angular.module('myApp.controllers', [])
             $scope.submit = function (formData) {
             	formData.disable = true;
             	AssignmentService.postMarking(formData).then(function (result){
-            		if (!result.success) {
-            			alert('Oops, try saving again ' + result.error);
+            		if (!result.data.success) {
+            			alert('Oops, try saving again ' + result.data.error);
                     	formData.disable = false;
             		} else {
                 		// load another pair for marking

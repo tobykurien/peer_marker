@@ -59,20 +59,41 @@ class MarkingRoutes extends BaseRoute {
       ])
       
       // Create a new evaluation
+      // Sample data: {"score":6,"answer1_id":2,"answer2_id":3,"disable":true,
+      //               "pcomment1":"d","ccomment1":"f","pcomment2":"g","ccomment2":"d"}
       post(
          new JsonTransformer("/api/marking") [ req, res |
-            var j = new JSONObject(req.body)
-            Log.i("marking", req.body)
-//            comparison.createIt(
-//            )
-//
-//            evaluation.createIt(
-//            )
-//
-//            evaluation.createIt(
-//            )
+            val j = new JSONObject(req.body)
+            
+            // calculate the score from -1 to 1           
+            var score = j.getDouble("score")
+            score = (score - 6.0d) / 6.0d
+            
+            // save the comparison
+            comparison.createIt(
+               "student_id", req.student.longId,
+               "answer1_id", j.getLong("answer1_id"),
+               "answer2_id", j.getLong("answer2_id"),
+               "score", score
+            )
 
-              #{ "success" -> true }
+            // save comments for answer1
+            evaluation.createIt(
+               "student_id", req.student.longId,
+               "answer_id", j.getLong("answer1_id"),
+               "pcomment", j.getString("pcomment1"),
+               "ccomment", j.getString("ccomment1")
+            )
+
+            // save comments for answer2
+            evaluation.createIt(
+               "student_id", req.student.longId,
+               "answer_id", j.getLong("answer2_id"),
+               "pcomment", j.getString("pcomment2"),
+               "ccomment", j.getString("ccomment2")
+            )
+
+           #{ "success" -> true }
          ])
 
    }
