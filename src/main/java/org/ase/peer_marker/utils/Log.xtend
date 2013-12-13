@@ -4,10 +4,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class Log {
-   val static Logger logger = LoggerFactory.getLogger("") 
+   // one static Logger to improve performance, although you loose configurability
+   val static Logger logger = LoggerFactory.getLogger("Peer Marker") 
 
    // A searchable tag prefix for filtering the log output
    def static tagPrefix(String tag) {
+      System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
       '''#[«tag»] '''
    }
 

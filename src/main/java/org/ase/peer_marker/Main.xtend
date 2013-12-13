@@ -7,17 +7,25 @@ import org.ase.peer_marker.route.AssignmentRoutes
 import org.ase.peer_marker.route.LoginRoutes
 import org.ase.peer_marker.route.MarkingRoutes
 import org.ase.peer_marker.route.StudentRoutes
+import org.ase.peer_marker.utils.Log
+import org.slf4j.LoggerFactory
 import spark.servlet.SparkApplication
 
 import static com.tobykurien.sparkler.Sparkler.*
+
 import static extension org.ase.peer_marker.Helper.*
+import static extension org.ase.peer_marker.utils.Log.*
+import org.javalite.activejdbc.LogFilter
+import org.javalite.activejdbc.Registry
 
 class Main implements SparkApplication {
    // Initialize server - called from main() or from Servlet container
    override init() {
+      Log.i("logger", "Default log level {}", System.getResource("org.slf4j.simpleLogger.defaultLogLevel"))
+      LogFilter.setLogExpression(".*Query\\:.*");
       DatabaseManager.init(Student.package.name) // init db with package containing db models
 
-      var workingDir = System.getProperty("user.dir")
+      val workingDir = System.getProperty("user.dir")
       externalStaticFileLocation(workingDir + "/views/app")
 
       // Set up site-wide authentication

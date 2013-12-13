@@ -1,5 +1,6 @@
 package org.ase.peer_marker.transformer
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.tobykurien.sparkler.Helper
 import com.tobykurien.sparkler.db.DatabaseManager
 import org.javalite.activejdbc.Base
@@ -8,7 +9,6 @@ import org.javalite.activejdbc.Model
 import spark.Request
 import spark.Response
 import spark.ResponseTransformerRoute
-import com.fasterxml.jackson.databind.ObjectMapper
 
 /**
  * Returns a JSON serialized version of Model objects
@@ -27,6 +27,12 @@ class JsonTransformer extends ResponseTransformerRoute {
    
    def escapeString(String s) {
       s.replace("\"", "\\\"")     
+   }
+
+   def returnError(Request request, Response response, Exception e) {
+      var error = Helper.handleError(request, response, e)
+      System.err.println(error)
+      "{\"error\" : \""+ error.escapeString + "\"}"
    }
    
    override handle(Request request, Response response) {
@@ -52,11 +58,12 @@ class JsonTransformer extends ResponseTransformerRoute {
                new ObjectMapper().writeValueAsString(model);
             }
          }
+      } catch (RestfulException e) {
+         response.status(e.status)
+         returnError(request, response, e)
       } catch (Exception e) {
          response.status(500)
-         var error = Helper.handleError(request, response, e)
-         System.err.println(error)
-         "{\"error\" : \""+ error.escapeString + "\"}"
+         returnError(request, response, e)
       } finally {
          Base.close()
       }
