@@ -48,7 +48,6 @@ var module = angular.module('myApp.controllers', [])
                     })
                 }, 2000);
             };
-
             fetch();
 
             $scope.submit = function (id, answer) {
@@ -175,13 +174,11 @@ var module = angular.module('myApp.controllers', [])
         '$timeout', function ($scope, AssignmentService, UserService, $location, $routeParams, $timeout) {
 
         	var observeEditing = function () {
-                var checkEditing = $timeout(function () {
-                    AssignmentService.submissions($routeParams.id).then(function (result) {
-                        $scope.answers = result.data;
-                        if ($scope.answers.length > 0) $scope.assignmentId = $scope.answers[0].assignment_id
-                        observeEditing();
-                    });
-                }, 1000);
+                AssignmentService.submissions($routeParams.id).then(function (result) {
+                    $scope.answers = result.data;
+                    if ($scope.answers.length > 0) $scope.assignmentId = $scope.answers[0].assignment_id
+                });
+                if ($location.path().startsWith("/teacher/view/")) $timeout(observeEditing, 1000);
             };        	
             observeEditing();
             
@@ -212,20 +209,17 @@ var module = angular.module('myApp.controllers', [])
             });
 
             var observeMarking = function () {
-                var checkMarking = $timeout(function () {
-                    AssignmentService.marking().then(function (result) {
-                        var data = result.data;
-                        $scope.markingData = [];
-                        for (var k in data) {
-                        	$scope.markingData[$scope.markingData.length] = {
-                        		"answers": data[k],
-                        		"evaluations": k
-                        	};
-                        }
-                        console.debug($scope.markingData);
-                        observeMarking();
-                    })
-                }, 10000);
+                AssignmentService.marking().then(function (result) {
+                    var data = result.data;
+                    $scope.markingData = [];
+                    for (var k in data) {
+                    	$scope.markingData[$scope.markingData.length] = {
+                    		"answers": data[k],
+                    		"evaluations": k
+                    	};
+                    }
+                    if ($location.path().startsWith("/teacher/mark/")) $timeout(observeMarking, 1000);
+                })
             };
             observeMarking();
             
