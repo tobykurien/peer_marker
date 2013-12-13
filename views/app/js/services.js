@@ -42,7 +42,7 @@ angular.module('myApp.services', []).value('version', '0.1')
 					return $http.delete("api/assignment/" + id);
 				},
 				get : function(assignmentId) {
-					return $http.get("api/assignment/" + assignmentId, null);
+					return $http.get("api/assignment/" + assignmentId);
 				},
 				createAnswer : function(id, answer) {
 					return $http.post("api/answer", {
@@ -70,6 +70,9 @@ angular.module('myApp.services', []).value('version', '0.1')
 				},
 				markPair : function() {
 					return $http.get("api/mark/pair");
+				},
+				postMarking : function(formData) {
+					return $http.post("api/marking", formData);
 				}
 			};
 		})

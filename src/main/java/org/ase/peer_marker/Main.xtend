@@ -22,7 +22,7 @@ class Main implements SparkApplication {
    // Initialize server - called from main() or from Servlet container
    override init() {
       Log.i("logger", "Default log level {}", System.getResource("org.slf4j.simpleLogger.defaultLogLevel"))
-      LogFilter.setLogExpression(".*Query\\:.*");
+      LogFilter.setLogExpression("Query\\:.*");
       DatabaseManager.init(Student.package.name) // init db with package containing db models
 
       val workingDir = System.getProperty("user.dir")

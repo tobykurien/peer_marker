@@ -67,15 +67,27 @@ var module = angular.module('myApp.controllers', [])
         	function loadPair() {
                 AssignmentService.markPair().then(function (result) {
                     $scope.answers = result.data;
-                	$scope.formData = {'score': 6}
+                	$scope.formData = {
+            			'score': 6,
+            			'answer1_id': result.data[0].id,
+            			'answer2_id': result.data[1].id,
+            			'disable': false
+                	}
                 });
         	}
         	loadPair();
         	
             $scope.submit = function (formData) {
-            	alert(formData.score);
-            	// TODO - post the data to the server
-            	loadPair();
+            	formData.disable = true;
+            	AssignmentService.postMarking(formData).then(function (result){
+            		if (!result.success) {
+            			alert('Oops, try saving again ' + result.error);
+                    	formData.disable = false;
+            		} else {
+                		// load another pair for marking
+                		loadPair();
+            		}
+            	});
             };
 
         }])
