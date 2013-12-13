@@ -13,6 +13,8 @@ import static org.ase.peer_marker.Constants.*
 
 import static extension org.ase.peer_marker.Helper.*
 import org.ase.peer_marker.utils.Log
+import org.javalite.activejdbc.DB
+import org.javalite.activejdbc.Base
 
 /**
  * Routes used during the peer marking phase
@@ -52,10 +54,45 @@ class MarkingRoutes extends BaseRoute {
       // Current marking progress
       get(new JsonTransformer("/api/marking") [ req, res |
          AssignmentRoutes.authenticate(req, res)
-         #[
-            #{"answers" -> 5, "evaluations" -> 0}, 
-            #{"answers" -> 1, "evaluations" -> 1}
-         ]
+         val assign = assignment.findFirst("status = ?", STATUS_MARKING)
+         if (assign != null) {
+//            val answers = answer.where("assignment_id = ?", assign.id)
+//            val data = answers.map[a|
+//               val comps = comparison.count("answer1_id = ? or answer2_id = ?", a.id, a.id)
+//               val m = a.toMap
+//               m.put("evaluations", comps)
+//               m
+//            ]
+//            
+//            var buckets = #{}
+//            data.forEach [d|
+//               buckets.put()
+//            ]
+            
+            // get data for answers and their comparisons
+            var answers = answer.count("assignment_id = ?", assign.id)
+            var evals = Base.findAll('''
+               select answers.id as answer_id, count(*) as evals
+               from answers, comparisons
+               where answers.assignment_id = ? and 
+                     (answers.id = comparisons.answer1_id or 
+                      answers.id = comparisons.answer2_id) 
+               group by answers.id
+            ''', assign.id)
+            
+            // Convert to Map of "Number of evaluations" -> "Number of answers"
+            val buckets = newHashMap("0" -> answers - evals.length)
+            evals.forEach [e|
+               val key = String.valueOf(e.get("evals"))
+               var current = buckets.get(key)
+               if (current == null) current = 0L
+               buckets.put(key, current + 1)
+            ]
+
+            buckets
+         } else {
+            #[]
+         }
       ])
       
       // Create a new evaluation
@@ -67,7 +104,7 @@ class MarkingRoutes extends BaseRoute {
             
             // calculate the score from -1 to 1           
             var score = j.getDouble("score")
-            score = (score - 6.0d) / 6.0d
+            score = (score - 6.0d) / 5.0d
             
             // save the comparison
             comparison.createIt(

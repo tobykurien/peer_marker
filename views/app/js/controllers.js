@@ -215,10 +215,17 @@ var module = angular.module('myApp.controllers', [])
                 var checkMarking = $timeout(function () {
                     AssignmentService.marking().then(function (result) {
                         var data = result.data;
-                        $scope.markingData = data;
+                        $scope.markingData = [];
+                        for (var k in data) {
+                        	$scope.markingData[$scope.markingData.length] = {
+                        		"answers": data[k],
+                        		"evaluations": k
+                        	};
+                        }
+                        console.debug($scope.markingData);
                         observeMarking();
                     })
-                }, 1000);
+                }, 10000);
             };
             observeMarking();
             
