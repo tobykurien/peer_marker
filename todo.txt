@@ -1,0 +1,8 @@
+Todo:
+=====
+
+- Complete the grading process
+- Implement WebSockets and remove all $timeout() references that were used for polling
+-- WebSockets can transmit paths to be sent to $location.path()
+- Fix SLF4J's SimpleLogger to accept configuration parameters
+- Write integration tests to test the full process of an assignment with multiple students
