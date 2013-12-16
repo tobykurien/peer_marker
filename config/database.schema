@@ -42,6 +42,7 @@ create table comparisons (
    id bigint auto_increment,
    created_at timestamp,
    updated_at timestamp,
+   assignment_id bigint,
    student_id bigint,
    answer1_id bigint,
    answer2_id bigint,

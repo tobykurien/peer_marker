@@ -23,7 +23,7 @@ class BestWorstGrading extends GradingFactory {
 		//				1
 		//			}
 		//		]
-		val res = answer.findAll.orderBy("score asc")
+		val res = answer.findAll.orderBy("score desc")
 		#[
 			res.first,
 			res.last

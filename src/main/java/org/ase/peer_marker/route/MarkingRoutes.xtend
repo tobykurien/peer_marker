@@ -106,8 +106,11 @@ class MarkingRoutes extends BaseRoute {
             var score = j.getDouble("score")
             score = (score - 6.0d) / 5.0d
             
+            var answer1 = answer.findById(j.getLong("answer1_id"))
+            
             // save the comparison
             comparison.createIt(
+               "assignment_id", answer1.getLong("assignment_id"),
                "student_id", req.student.longId,
                "answer1_id", j.getLong("answer1_id"),
                "answer2_id", j.getLong("answer2_id"),
