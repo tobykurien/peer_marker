@@ -1,4 +1,10 @@
 'use strict';
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+  };
+}
 
 
 // Declare app level module which depends on filters, and services
