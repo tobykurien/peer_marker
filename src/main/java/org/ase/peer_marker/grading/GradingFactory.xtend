@@ -12,16 +12,15 @@ abstract class GradingFactory {
    protected var List<Comparison> comparisons
    
    def static GradingFactory getInstance(List<Comparison> comparisons) {
-      throw new Exception("not yet implemented")
+      new BestWorstGrading(comparisons)
    }
    
    protected new(List<Comparison> comparisons) {
       this.comparisons = comparisons
    }
    
-   // Returns a subset of comparisons for the teacher to grade
-   def abstract List<Comparison> getComparisonsForGrading() 
+   def abstract List<Answer> getAnswersForGrading()
    
    // Extrapolate grades supplied by teacher to all answers
-   def abstract void applyGrading(long[] comparisonIds,  float[] grades) 
+   def abstract void applyGrading(long[] answerIds,  float[] grades) 
 }

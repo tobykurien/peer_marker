@@ -1,7 +1,6 @@
 package org.ase.peer_marker.scoring
 
 import java.util.List
-import org.ase.peer_marker.model.Answer
 import org.ase.peer_marker.model.Comparison
 
 /**
@@ -20,5 +19,5 @@ abstract class ScoringFactory {
    }
    
    // Apply the comparisons to arrive at a ranking score for each answer
-   def abstract void rankAnswers() 
+   def abstract void rankAnswers()
 }

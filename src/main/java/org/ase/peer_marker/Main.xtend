@@ -4,19 +4,17 @@ import com.tobykurien.sparkler.db.DatabaseManager
 import org.ase.peer_marker.model.Student
 import org.ase.peer_marker.route.AnswerRoutes
 import org.ase.peer_marker.route.AssignmentRoutes
+import org.ase.peer_marker.route.GradingRoutes
 import org.ase.peer_marker.route.LoginRoutes
 import org.ase.peer_marker.route.MarkingRoutes
 import org.ase.peer_marker.route.StudentRoutes
 import org.ase.peer_marker.utils.Log
-import org.slf4j.LoggerFactory
+import org.javalite.activejdbc.LogFilter
 import spark.servlet.SparkApplication
 
 import static com.tobykurien.sparkler.Sparkler.*
 
 import static extension org.ase.peer_marker.Helper.*
-import static extension org.ase.peer_marker.utils.Log.*
-import org.javalite.activejdbc.LogFilter
-import org.javalite.activejdbc.Registry
 
 class Main implements SparkApplication {
    // Initialize server - called from main() or from Servlet container
@@ -49,6 +47,7 @@ class Main implements SparkApplication {
       new AnswerRoutes().load
       new AssignmentRoutes().load
       new MarkingRoutes().load
+      new GradingRoutes().load
    }
    
    // Main method for running embedded server
