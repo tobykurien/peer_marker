@@ -178,7 +178,7 @@ var module = angular.module('myApp.controllers', [])
                     $scope.answers = result.data;
                     if ($scope.answers.length > 0) $scope.assignmentId = $scope.answers[0].assignment_id
                 });
-                $timeout(observeEditing, 1000);
+                if ($location.path().startsWith("/teacher/view/")) $timeout(observeEditing, 1000);
             };        	
             observeEditing();
             
