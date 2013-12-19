@@ -30,7 +30,7 @@ var module = angular.module('myApp.controllers', [])
                 var checkAssignment = $timeout(function () {
                     AssignmentService.currentEditing().then(function (result) {
                         var data = result.data;
-                        if (data.assignment.id) {
+                        if (data.assignment && data.assignment.id) {
                             $scope.answer = result.data;
                             $timeout.cancel(checkAssignment);
                         }
@@ -40,7 +40,7 @@ var module = angular.module('myApp.controllers', [])
                     })
                     AssignmentService.currentMarking().then(function (result) {
                         var data = result.data;
-                        if (data.assignment.id) {
+                        if (data.assignment && data.assignment.id) {
                             $scope.marking = result.data;
                             $timeout.cancel(checkAssignment);
                             $location.path("/student/mark")

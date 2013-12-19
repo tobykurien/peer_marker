@@ -15,8 +15,12 @@ import spark.servlet.SparkApplication
 import static com.tobykurien.sparkler.Sparkler.*
 
 import static extension org.ase.peer_marker.Helper.*
+import org.ase.peer_marker.websocket.WebSocketServer
+import org.ase.peer_marker.websocket.RouteWebSocket
 
 class Main implements SparkApplication {
+   var WebSocketServer webSocketServer
+   
    // Initialize server - called from main() or from Servlet container
    override init() {
       Log.i("logger", "Default log level {}", System.getResource("org.slf4j.simpleLogger.defaultLogLevel"))
@@ -41,6 +45,10 @@ class Main implements SparkApplication {
          render("views/app/index.html", #{})
       ]
 
+      get("/socket") [ req, res |
+         render("views/app/websocket.html", #{})
+      ]
+
       // Set up app routes      
       new LoginRoutes().load
       new StudentRoutes().load
@@ -48,6 +56,11 @@ class Main implements SparkApplication {
       new AssignmentRoutes().load
       new MarkingRoutes().load
       new GradingRoutes().load
+      
+      // Start the web socket server
+      webSocketServer = new WebSocketServer("0.0.0.0", 4568)
+      webSocketServer.addWebSocket(RouteWebSocket, "/socket")
+      webSocketServer.start
    }
    
    // Main method for running embedded server

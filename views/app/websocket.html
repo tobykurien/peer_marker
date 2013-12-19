@@ -1,0 +1,29 @@
+<html>
+<head><title>Test</title></head>
+<body>
+
+<input type="button" value="connect" onclick="connect()"/>
+<script type="text/javascript">
+function connect() {
+     var address = "ws://localhost:4568/socket";
+     var Service = {};
+     
+     var callbacks = {};
+     
+     var currentCallbackId = 0;
+
+     this.console.log("Trying webq connection to " + address + "...");
+     var ws = new WebSocket(address);
+
+     ws.onopen = function(){
+       console.log("Socket has been opened!");
+     };
+     
+     ws.onmessage = function(message){
+       console.log(message.data);
+     };
+   }
+</script>
+
+</body>
+</html>
