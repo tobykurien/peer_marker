@@ -1,6 +1,7 @@
 package org.ase.peer_marker.scoring
 
 import java.util.List
+import org.ase.peer_marker.model.Answer
 import org.ase.peer_marker.model.Comparison
 
 /**
@@ -11,7 +12,7 @@ abstract class ScoringFactory {
    protected var List<Comparison> comparisons
    
    def static ScoringFactory getInstance(List<Comparison> comparisons) {
-      throw new Exception("not yet implemented")
+      return new DefaultScoring(comparisons)
    }
    
    protected new(List<Comparison> comparisons) {
@@ -19,5 +20,5 @@ abstract class ScoringFactory {
    }
    
    // Apply the comparisons to arrive at a ranking score for each answer
-   def abstract void rankAnswers()
+   def abstract List<Answer> rankAnswers()
 }

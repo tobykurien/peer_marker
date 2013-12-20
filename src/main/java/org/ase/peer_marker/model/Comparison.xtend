@@ -9,5 +9,7 @@ import org.javalite.activejdbc.annotations.BelongsTo
    @BelongsTo(parent=Student, foreignKeyName="student_id")
 ])
 class Comparison extends Model {
-   
+   def getScore() {
+      if (getDouble("score") == null) { 0D } else { getDouble("score") }
+   }
 }

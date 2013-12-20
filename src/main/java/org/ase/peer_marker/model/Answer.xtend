@@ -13,4 +13,8 @@ class Answer extends Model {
 	def getStudentId() {
 	   getLong("student_id")
 	}
+	
+	def getScore() {
+	   if (getDouble("score") == null) { 0D } else { getDouble("score") }
+	}
 }
