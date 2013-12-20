@@ -58,8 +58,9 @@ class Main implements SparkApplication {
       new GradingRoutes().load
       
       // Start the web socket server
-      webSocketServer = new WebSocketServer("0.0.0.0", 4568)
+      webSocketServer = new WebSocketServer()
       webSocketServer.addWebSocket(RouteWebSocket, "/socket")
+      webSocketServer.initialize("0.0.0.0", 4568)
       webSocketServer.start
    }
    
