@@ -1,5 +1,6 @@
 package org.ase.peer_marker.websocket
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.ase.peer_marker.utils.Log
 import org.eclipse.jetty.websocket.api.Session
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose
@@ -8,13 +9,13 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage
 import org.eclipse.jetty.websocket.api.annotations.WebSocket
 
 @WebSocket
-class RouteWebSocket extends BaseWebSocket {
+class StudentWebSocket extends BaseWebSocket {
 
 	@OnWebSocketConnect
 	override onConnect(Session session) {
 		super.onConnect(session)
 		Log.i("socket", "got connection" + this.toString)
-		remote.sendString("Helloooo")
+		remote.sendString("Client " + session.localAddress + " connected!")
 	}
 
 	@OnWebSocketMessage
@@ -27,5 +28,9 @@ class RouteWebSocket extends BaseWebSocket {
 	override onClose(int statusCode, String reason) {
 		Log.i("socket", "connection closed " + this.toString)
 		super.onClose(statusCode, reason)
+	}
+	
+	def sendPath(String answer){
+		remote.sendString(new ObjectMapper().writeValueAsString(answer))
 	}
 }

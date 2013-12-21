@@ -51,6 +51,10 @@ class WebSocketServer {
 		ch.contextPath = pathSpec
 		handlers.add(wsHandler)
 	}
+	
+	def getServer(){
+		return server;
+	}
 }
 
 class MyWebSockHandler extends WebSocketHandler {

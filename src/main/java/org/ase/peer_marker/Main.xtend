@@ -9,14 +9,14 @@ import org.ase.peer_marker.route.LoginRoutes
 import org.ase.peer_marker.route.MarkingRoutes
 import org.ase.peer_marker.route.StudentRoutes
 import org.ase.peer_marker.utils.Log
+import org.ase.peer_marker.websocket.StudentWebSocket
+import org.ase.peer_marker.websocket.WebSocketServer
 import org.javalite.activejdbc.LogFilter
 import spark.servlet.SparkApplication
 
 import static com.tobykurien.sparkler.Sparkler.*
 
 import static extension org.ase.peer_marker.Helper.*
-import org.ase.peer_marker.websocket.WebSocketServer
-import org.ase.peer_marker.websocket.RouteWebSocket
 
 class Main implements SparkApplication {
    var WebSocketServer webSocketServer
@@ -53,13 +53,13 @@ class Main implements SparkApplication {
       new LoginRoutes().load
       new StudentRoutes().load
       new AnswerRoutes().load
-      new AssignmentRoutes().load
+      new AssignmentRoutes(webSocketServer).load
       new MarkingRoutes().load
       new GradingRoutes().load
       
       // Start the web socket server
       webSocketServer = new WebSocketServer()
-      webSocketServer.addWebSocket(RouteWebSocket, "/socket")
+      webSocketServer.addWebSocket(StudentWebSocket, "/socket/student")
       webSocketServer.initialize("0.0.0.0", 4568)
       webSocketServer.start
    }
