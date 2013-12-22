@@ -55,9 +55,9 @@ class WebSocketServer {
 	
 	def sendMessage(Class<?> webSocketClass, String message) {
 	   webSockets.forEach[sock|
-//	      if (sock instanceof webSocketClass) {
+	      if (sock.class.canonicalName.equals(webSocketClass.canonicalName)) {
             sock.sendMessage(message)	         
-//	      }
+	      }
 	   ]
 	}
 	
