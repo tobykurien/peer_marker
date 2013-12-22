@@ -15,7 +15,7 @@ class StudentWebSocket extends BaseWebSocket {
 	override onConnect(Session session) {
 		super.onConnect(session)
 		Log.i("socket", "got connection" + this.toString)
-		remote.sendString("Client " + session.localAddress + " connected!")
+		//remote.sendString("Client " + session.localAddress + " connected!")
 	}
 
 	@OnWebSocketMessage
