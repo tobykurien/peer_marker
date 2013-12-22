@@ -56,6 +56,15 @@ class Main implements SparkApplication {
       new AssignmentRoutes(webSocketServer).load
       new MarkingRoutes().load
       new GradingRoutes().load
+
+      
+      // test thread to constantly send messages to connected websockets
+      new TestThread [
+         while (true) {
+            Thread.sleep(5000)
+            if (webSocketServer != null) webSocketServer.sendMessage(StudentWebSocket, "{ 'message': 'message from server!' }")
+         }   
+      ].start
       
       // Start the web socket server
       webSocketServer = new WebSocketServer()
@@ -68,4 +77,18 @@ class Main implements SparkApplication {
    def static void main(String[] args) {
       new Main().init();
    }
+}
+
+// Convert Xtend closure to Thread
+class TestThread extends Thread {
+   val (Void)=>void closure
+   
+   new((Void)=>void closure) {
+      this.closure = closure   
+   }
+   
+   override run() {
+      closure.apply(null)
+   }
+   
 }

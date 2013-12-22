@@ -2,6 +2,7 @@ package org.ase.peer_marker.websocket
 
 import java.util.ArrayList
 import java.util.List
+import org.ase.peer_marker.utils.Log
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.HttpConfiguration
 import org.eclipse.jetty.server.HttpConnectionFactory
@@ -18,7 +19,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory
 class WebSocketServer {
 	var Server server
 	val List<Handler> handlers = new ArrayList<Handler>
-
+	public static val webSockets = new ArrayList<BaseWebSocket>
 
 	def initialize(String host, int port) {
 		server = new Server
@@ -36,12 +37,12 @@ class WebSocketServer {
 
 	def start() {
 		server.start
-		server.join
+		//server.join
 	}
 
 	def stop() {
 		server.stop
-		server.join
+		//server.join
 	}
 
 	def addWebSocket(Class<?> webSocket, String pathSpec) {
@@ -50,6 +51,14 @@ class WebSocketServer {
 		ch.handler = wsHandler
 		ch.contextPath = pathSpec
 		handlers.add(wsHandler)
+	}
+	
+	def sendMessage(Class<?> webSocketClass, String message) {
+	   webSockets.forEach[sock|
+//	      if (sock instanceof webSocketClass) {
+            sock.sendMessage(message)	         
+//	      }
+	   ]
 	}
 	
 	def getServer(){
@@ -66,5 +75,9 @@ class MyWebSockHandler extends WebSocketHandler {
 
 	override configure(WebSocketServletFactory factory) {
 		factory.register(webSocket)
+	}
+	
+	def getWebSocket() {
+	   webSocket
 	}
 }

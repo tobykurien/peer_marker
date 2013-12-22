@@ -30,7 +30,8 @@ class StudentWebSocket extends BaseWebSocket {
 		super.onClose(statusCode, reason)
 	}
 	
-	def sendPath(String answer){
-		remote.sendString(new ObjectMapper().writeValueAsString(answer))
+	override sendMessage(String message){
+      Log.i("socket", "Sending message: " + this.toString)
+		remote.sendString(message)
 	}
 }

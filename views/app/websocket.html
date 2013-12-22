@@ -20,7 +20,8 @@ function connect() {
      };
      
      ws.onmessage = function(message){
-       console.log(message.data);
+       console.log("Message received!");
+       console.log(message);
      };
    }
 </script>
