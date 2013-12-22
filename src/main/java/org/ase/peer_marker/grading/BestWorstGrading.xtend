@@ -25,14 +25,10 @@ class BestWorstGrading extends GradingFactory {
 		//		]
 		val res = answer.findAll.orderBy("score desc")
 		#[
-			res.first,
+			res.head,
 			res.last
 		]
 
-	}
-
-	def first(Iterable<Answer> iter) {
-		iter.take(1).get(0)
 	}
 	
 	override applyGrading(long[] comparisonIds, float[] grades) {
