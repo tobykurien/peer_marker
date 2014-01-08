@@ -1,8 +1,21 @@
 Todo:
 =====
 
-- Complete the grading process
+- Timer during editing
+- include cohort information from Moodle on login
+- implement proper "teacher" identification (perhaps from Moodle)
 - Implement WebSockets and remove all $timeout() references that were used for polling
--- WebSockets can transmit paths to be sent to $location.path()
 - Fix SLF4J's SimpleLogger to accept configuration parameters
 - Write integration tests to test the full process of an assignment with multiple students
+
+
+Student Bugs:
+=============
+- websocket reconnect no reliable
+- while marking, there is no websocket (does there need to be?)
+- check what happens when marking after assignment moved to grading
+- student edits might be lost when automatically moving to marking
+
+
+Teacher Bugs:
+=============

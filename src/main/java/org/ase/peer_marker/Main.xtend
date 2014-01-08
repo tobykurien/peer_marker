@@ -54,7 +54,7 @@ class Main implements SparkApplication {
       new LoginRoutes().load
       new StudentRoutes().load
       new AnswerRoutes().load
-      new AssignmentRoutes().load
+      new AssignmentRoutes(webSocketServer).load
       new MarkingRoutes().load
       new GradingRoutes().load
       

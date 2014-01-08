@@ -1,9 +1,11 @@
 package org.ase.peer_marker.route
 
+import org.ase.peer_marker.Main
 import org.ase.peer_marker.model.Answer
 import org.ase.peer_marker.model.Assignment
 import org.ase.peer_marker.model.Student
 import org.ase.peer_marker.transformer.JsonTransformer
+import org.ase.peer_marker.websocket.StudentWebSocket
 import org.ase.peer_marker.websocket.WebSocketServer
 import org.javalite.activejdbc.Model
 import org.json.JSONObject
@@ -13,12 +15,15 @@ import spark.Response
 import static org.ase.peer_marker.Constants.*
 
 import static extension org.ase.peer_marker.Helper.*
+import com.fasterxml.jackson.databind.ObjectMapper
 
 class AssignmentRoutes extends BaseRoute {
 	val assignment = Model.with(Assignment)
 	val answer = Model.with(Answer)
+	val WebSocketServer socketServer
 
-	new() {
+	new(WebSocketServer webSocketServer) {
+	   this.socketServer = webSocketServer
 	}
 
 	override load() {
@@ -63,6 +68,22 @@ class AssignmentRoutes extends BaseRoute {
 					if(j.has("question")) a.set("question", j.getString("question"))
 					if(j.has("status")) a.set("status", j.getString("status"))
 					a.saveIt
+					
+					if (STATUS_EDITING.equalsIgnoreCase(a.getString("status"))) {
+                  socketServer.sendMessage(StudentWebSocket, 
+                     new ObjectMapper().writeValueAsString(#{
+                         "path" -> "/student/edit" 
+                     }))
+					}
+
+               if (STATUS_MARKING.equalsIgnoreCase(a.getString("status"))) {
+                  socketServer.sendMessage(StudentWebSocket, 
+                     new ObjectMapper().writeValueAsString(#{
+                         "path" -> "/student/mark " 
+                     }))
+               }
+					
+					null					
 				} else {
 					res.status(404)
 					throw new Exception("Not found")
