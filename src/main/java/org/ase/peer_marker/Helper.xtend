@@ -7,6 +7,16 @@ import spark.Request
  * Utility extension methods
  */
 class Helper {
+   // Are we running in development environment?
+   def static isDev() {
+      val String env = com.tobykurien.sparkler.Helper.environment as String
+      if ("development".equalsIgnoreCase(env)) {
+         true
+      } else {
+         false
+      }
+   }
+   
    // Get the student from the session   
    def static getStudent(Request request) {
       request.session(true).attribute("student") as Student

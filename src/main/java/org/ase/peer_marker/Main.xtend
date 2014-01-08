@@ -8,8 +8,8 @@ import org.ase.peer_marker.route.GradingRoutes
 import org.ase.peer_marker.route.LoginRoutes
 import org.ase.peer_marker.route.MarkingRoutes
 import org.ase.peer_marker.route.StudentRoutes
-import org.ase.peer_marker.utils.Log
 import org.ase.peer_marker.websocket.StudentWebSocket
+import org.ase.peer_marker.websocket.TeacherWebSocket
 import org.ase.peer_marker.websocket.WebSocketServer
 import org.javalite.activejdbc.LogFilter
 import spark.servlet.SparkApplication
@@ -20,11 +20,12 @@ import static extension org.ase.peer_marker.Helper.*
 
 class Main implements SparkApplication {
    var WebSocketServer webSocketServer
+   extension Helper helper = new Helper
    
    // Initialize server - called from main() or from Servlet container
    override init() {
-      Log.i("logger", "Default log level {}", System.getResource("org.slf4j.simpleLogger.defaultLogLevel"))
-      LogFilter.setLogExpression("Query\\:.*");
+      //Log.i("logger", "Default log level {}", System.getResource("org.slf4j.simpleLogger.defaultLogLevel"))
+      if (isDev()) LogFilter.setLogExpression("Query\\:.*");
       DatabaseManager.init(Student.package.name) // init db with package containing db models
 
       val workingDir = System.getProperty("user.dir")
@@ -53,22 +54,22 @@ class Main implements SparkApplication {
       new LoginRoutes().load
       new StudentRoutes().load
       new AnswerRoutes().load
-      new AssignmentRoutes(webSocketServer).load
+      new AssignmentRoutes().load
       new MarkingRoutes().load
       new GradingRoutes().load
-
       
       // test thread to constantly send messages to connected websockets
-      new TestThread [
-         while (true) {
-            Thread.sleep(5000)
-            if (webSocketServer != null) webSocketServer.sendMessage(StudentWebSocket, "{ 'message': 'message from server!' }")
-         }   
-      ].start
+//      new XThread [
+//         while (true) {
+//            Thread.sleep(5000)
+//            if (webSocketServer != null) webSocketServer.sendMessage(StudentWebSocket, "{ 'message': 'message from server!' }")
+//         }   
+//      ].start
       
       // Start the web socket server
       webSocketServer = new WebSocketServer()
-      webSocketServer.addWebSocket(StudentWebSocket, "/socket/student")
+      webSocketServer.addWebSocket(StudentWebSocket, "/student")
+      //webSocketServer.addWebSocket(TeacherWebSocket, "/teacher")
       webSocketServer.initialize("0.0.0.0", 4568)
       webSocketServer.start
    }
@@ -80,7 +81,7 @@ class Main implements SparkApplication {
 }
 
 // Convert Xtend closure to Thread
-class TestThread extends Thread {
+class XThread extends Thread {
    val (Void)=>void closure
    
    new((Void)=>void closure) {

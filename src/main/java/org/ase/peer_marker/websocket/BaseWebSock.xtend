@@ -6,9 +6,10 @@ import org.eclipse.jetty.websocket.server.WebSocketHandler
 
 abstract class BaseWebSocket {
    protected var RemoteEndpoint remote
-   
+   protected var Session session
    
    def void onConnect(Session session) {
+      this.session = session
       remote = session.remote
       WebSocketServer.webSockets.add(this)
    }

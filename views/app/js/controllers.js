@@ -20,36 +20,86 @@ var module = angular.module('myApp.controllers', [])
 
             UserService.get().then(function (result) {
                 $scope.user = result.data;
+                socketOpen(result.data)
             });
 
             AssignmentService.answers().then(function (result) {
                 $scope.answers = result.data;
             });
+            
+//
+//            var fetch = function () {
+//                var checkAssignment = $timeout(function () {
+//                    AssignmentService.currentEditing().then(function (result) {
+//                        var data = result.data;
+//                        if (data.assignment && data.assignment.id) {
+//                            $scope.answer = result.data;
+//                            $timeout.cancel(checkAssignment);
+//                        }
+//                        else {
+//                            fetch();
+//                        }
+//                    })
+//                    AssignmentService.currentMarking().then(function (result) {
+//                        var data = result.data;
+//                        if (data.assignment && data.assignment.id) {
+//                            $scope.marking = result.data;
+//                            $timeout.cancel(checkAssignment);
+//                            $location.path("/student/mark")
+//                        }
+//                    })
+//                }, 2000);
+//            };
+//            fetch();
 
-            var fetch = function () {
-                var checkAssignment = $timeout(function () {
-                    AssignmentService.currentEditing().then(function (result) {
-                        var data = result.data;
-                        if (data.assignment && data.assignment.id) {
-                            $scope.answer = result.data;
-                            $timeout.cancel(checkAssignment);
-                        }
-                        else {
-                            fetch();
-                        }
-                    })
-                    AssignmentService.currentMarking().then(function (result) {
-                        var data = result.data;
-                        if (data.assignment && data.assignment.id) {
-                            $scope.marking = result.data;
-                            $timeout.cancel(checkAssignment);
-                            $location.path("/student/mark")
-                        }
-                    })
-                }, 2000);
-            };
-            fetch();
-
+            // open a socket to listen for status changes
+            var socketOpen = function(user) { 
+	            var address = "ws://localhost:4568/student";
+	            var ws = new WebSocket(address);
+	
+	            ws.onopen = function(){
+	            	console.log("Socket has been opened!");
+	            	// check for editing/marking assignment
+	            	ws.send(JSON.stringify({ 'user': user }));
+	            };
+	            
+	            ws.onmessage = function(message){
+	              console.log("Message received: " + message.data);
+	              var res = JSON.parse(message.data);
+	              if (res.path == "/student/edit") {
+	            	// assignment available for editing
+	                AssignmentService.currentEditing().then(function (result) {
+		                var data = result.data;
+		                if (data.assignment && data.assignment.id) {
+		                    $scope.answer = result.data;
+		                }
+		                else {
+		                    fetch();
+		                }
+		            })
+	              } else if (res.path == "/student/mark") {
+	            	// assignment available for marking
+					AssignmentService.currentMarking().then(function (result) {
+					    var data = result.data;
+					    if (data.assignment && data.assignment.id) {
+					        $scope.marking = result.data;
+					        $location.path("/student/mark")
+					    }
+					})
+	              }
+	            };
+	            
+	            ws.onclose = function() {
+	            	console.log("socket closed");
+	            	setTimeout(socketOpen, 1000); // reconnect
+	            }
+	            
+	            ws.onerror = function() {
+	            	console.log("socket error");
+	            	setTimeout(socketOpen, 1000); // reconnect
+	            }
+            }
+            
             $scope.submit = function (id, answer) {
                 AssignmentService.createAnswer(id, answer).then(function () {
                     $scope.assignment = {};

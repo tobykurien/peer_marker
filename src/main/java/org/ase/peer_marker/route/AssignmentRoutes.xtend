@@ -17,10 +17,8 @@ import static extension org.ase.peer_marker.Helper.*
 class AssignmentRoutes extends BaseRoute {
 	val assignment = Model.with(Assignment)
 	val answer = Model.with(Answer)
-	val WebSocketServer webSocketServer
 
-	new(WebSocketServer server) {
-		webSocketServer = server;
+	new() {
 	}
 
 	override load() {
