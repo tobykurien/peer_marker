@@ -16,6 +16,7 @@ import static org.ase.peer_marker.Constants.*
 
 import static extension org.ase.peer_marker.Helper.*
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.ase.peer_marker.utils.Log
 
 class AssignmentRoutes extends BaseRoute {
 	val assignment = Model.with(Assignment)
@@ -69,19 +70,23 @@ class AssignmentRoutes extends BaseRoute {
 					if(j.has("status")) a.set("status", j.getString("status"))
 					a.saveIt
 					
-					if (STATUS_EDITING.equalsIgnoreCase(a.getString("status"))) {
-                  socketServer.sendMessage(StudentWebSocket, 
-                     new ObjectMapper().writeValueAsString(#{
-                         "path" -> "/student/edit" 
-                     }))
+					if (socketServer != null) {
+   	            if (STATUS_EDITING.equalsIgnoreCase(a.getString("status"))) {
+                     socketServer.sendMessage(StudentWebSocket, 
+                        new ObjectMapper().writeValueAsString(#{
+                            "path" -> "/student/edit" 
+                        }))
+                  }
+   
+                  if (STATUS_MARKING.equalsIgnoreCase(a.getString("status"))) {
+                     socketServer.sendMessage(StudentWebSocket, 
+                        new ObjectMapper().writeValueAsString(#{
+                            "path" -> "/student/mark " 
+                        }))
+                  }
+					} else {
+					   Log.w("socket", "No socket server for AssignmentRoutes, skipping student redirect")
 					}
-
-               if (STATUS_MARKING.equalsIgnoreCase(a.getString("status"))) {
-                  socketServer.sendMessage(StudentWebSocket, 
-                     new ObjectMapper().writeValueAsString(#{
-                         "path" -> "/student/mark " 
-                     }))
-               }
 					
 					null					
 				} else {

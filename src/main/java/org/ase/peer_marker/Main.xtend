@@ -50,6 +50,13 @@ class Main implements SparkApplication {
          render("views/app/websocket.html", #{})
       ]
 
+      // Start the web socket server
+      webSocketServer = new WebSocketServer()
+      webSocketServer.addWebSocket(StudentWebSocket, "/student")
+      //webSocketServer.addWebSocket(TeacherWebSocket, "/teacher")
+      webSocketServer.initialize("0.0.0.0", 4568)
+      webSocketServer.start
+
       // Set up app routes      
       new LoginRoutes().load
       new StudentRoutes().load
@@ -65,13 +72,6 @@ class Main implements SparkApplication {
 //            if (webSocketServer != null) webSocketServer.sendMessage(StudentWebSocket, "{ 'message': 'message from server!' }")
 //         }   
 //      ].start
-      
-      // Start the web socket server
-      webSocketServer = new WebSocketServer()
-      webSocketServer.addWebSocket(StudentWebSocket, "/student")
-      //webSocketServer.addWebSocket(TeacherWebSocket, "/teacher")
-      webSocketServer.initialize("0.0.0.0", 4568)
-      webSocketServer.start
    }
    
    // Main method for running embedded server
