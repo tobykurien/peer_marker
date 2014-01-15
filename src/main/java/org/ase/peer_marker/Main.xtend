@@ -64,32 +64,10 @@ class Main implements SparkApplication {
       new AssignmentRoutes(webSocketServer).load
       new MarkingRoutes().load
       new GradingRoutes().load
-      
-      // test thread to constantly send messages to connected websockets
-//      new XThread [
-//         while (true) {
-//            Thread.sleep(5000)
-//            if (webSocketServer != null) webSocketServer.sendMessage(StudentWebSocket, "{ 'message': 'message from server!' }")
-//         }   
-//      ].start
    }
    
    // Main method for running embedded server
    def static void main(String[] args) {
       new Main().init();
    }
-}
-
-// Convert Xtend closure to Thread
-class XThread extends Thread {
-   val (Void)=>void closure
-   
-   new((Void)=>void closure) {
-      this.closure = closure   
-   }
-   
-   override run() {
-      closure.apply(null)
-   }
-   
 }
