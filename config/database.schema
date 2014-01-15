@@ -4,6 +4,8 @@ create table students (
    updated_at timestamp,
    display_name varchar(255),
 	username varchar(255),
+   user_id varchar(255),
+   course_id varchar(255),
 	password varchar(255)
 );
 
@@ -13,7 +15,7 @@ create table assignments (
 	updated_at timestamp,
 	name varchar(255),
 	question text,
-	class varchar(255),
+   course_id varchar(255),
 	status varchar(30)
 );
 
