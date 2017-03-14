@@ -53,5 +53,5 @@
 	<classpathentry kind="lib" path="libs/websocket-common-9.1.0.RC2.jar"/>
 	<classpathentry kind="lib" path="libs/websocket-server-9.1.0.RC2.jar"/>
 	<classpathentry kind="lib" path="libs/websocket-servlet-9.1.0.RC2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="build/classes/main"/>
 </classpath>
